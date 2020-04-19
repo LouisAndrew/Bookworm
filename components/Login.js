@@ -66,8 +66,8 @@ const Login = () => {
         <Container>
             <LoginHeader className='login-head' />
             <h3 id='head'></h3>
-            <SignIn loginWithEmail={loginWithEmail} />
-            <Button onClick={loginWithGoogle} color='#fff' bColor='#4285F4' text='Login With Google' />
+            {/* <SignIn loginWithEmail={loginWithEmail} /> */}
+            <Button onClick={loginWithGoogle} color='#000' bColor='#fff' border='3px solid #000' text='Login With Google' />
         </Container>
     )
 }
@@ -76,10 +76,10 @@ export default Login
 
 const Container = styled.section`
     width: 100%;
+    min-height: 92vh;
     padding: 5% 10%;
     ${({ theme }) => theme.center()};
     flex-flow: column nowrap;
-    background-color: ${({ theme }) => theme.dark};
 
     .login-head {
         margin-bottom: 2vh;

@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import useGoogleFont from '../hooks/useGoogleFont'
 import Navbar from './Navbar'
+import SearchBar from './SearchBar'
+import Cookie from 'js-cookie'
+import { useRouter } from 'next/router'
 
 const Layout = props => {
 
@@ -10,6 +13,10 @@ const Layout = props => {
             display: flex;
             justify-content: center;
             align-items: center;
+        `),
+        fitContainer: () => (`
+            height: 100%;
+            width: 100%;
         `),
         pink: '#FFA987',
         bg: '#F7EBE8',
@@ -28,7 +35,7 @@ const Layout = props => {
        }
 
        h1 {
-           font-size: 3rem;
+           font-size: 2.5rem;
        }
 
        h2 {
@@ -46,7 +53,23 @@ const Layout = props => {
        p, button, a {
            font-size: 1rem;
        }
+
+       .wrap {
+            padding: 0 15%;
+       }
     `
+
+    const router = useRouter()
+    const [ user, setUser ] = useState(Cookie.getJSON('user'))
+
+    useEffect(() => {
+
+        setTimeout(() => {
+            if (!user && router.pathname !== '/login') {
+                router.push('/login')
+            }
+        }, 1000)
+    })
 
     useGoogleFont()
 
@@ -54,7 +77,8 @@ const Layout = props => {
         <>
             <Global />
             <ThemeProvider theme={theme}>
-                <Navbar />
+                <Navbar isLoggedIn={user} />
+                <SearchBar />
                 {props.children}
             </ThemeProvider>
         </>

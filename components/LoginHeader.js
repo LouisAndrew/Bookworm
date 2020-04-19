@@ -5,7 +5,7 @@ const LoginHeader = props => {
     return (
         <Container {...props}>
             <h1>Welcome to Bookworm</h1>
-            <h2>a Social Media platform to share and discover books</h2>
+            <h3>a Social Media platform to share and discover books</h3>
         </Container>
     )
 }
@@ -16,19 +16,21 @@ const Container = styled.div`
     width: 100%;
     ${({ theme }) => theme.center()};
     flex-flow: column nowrap;
-    color: #fff;
     padding: 5vh;
     line-height: 8rem;
-    background-color: ${({ theme }) => theme.dark};
 
-    h2 {
+    h1 {
+        font-size: 4rem;
+    }
+
+    h3 {
         text-align: center;
         line-height: 2rem;
     }
 
     @media only screen and (max-width: 464px) {
         
-        h2 {
+        h3 {
             text-align: left;
         }
     }
