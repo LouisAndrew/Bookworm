@@ -64,15 +64,13 @@ const Layout = props => {
 
     useEffect(() => {
 
-        setTimeout(() => {
-            if (!user && router.pathname !== '/login') {
-                router.push('/login')
-            }
-        }, 1000)
+        if (!user && router.pathname !== '/login') {
+            router.push('/login')
+        }
     })
 
     useGoogleFont()
-
+    
     return (
         <>
             <Global />

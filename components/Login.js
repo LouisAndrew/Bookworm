@@ -36,7 +36,6 @@ const Login = () => {
 
     const loginWithGoogle = () => {
         const googleProvider = new auth.GoogleAuthProvider()
-        console.log(auth)
 
         auth().signInWithPopup(googleProvider)
             .then(res => {
@@ -47,20 +46,20 @@ const Login = () => {
             })
     }
 
-    const loginWithEmail = (email, password) => {
+    // const loginWithEmail = (email, password) => {
 
-        auth().signInWithEmailAndPassword(email, password)
-            .then(res => {
-                console.log(res.user)
-                console.log(res)
-                logUserIn(res.user)
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    }
+    //     auth().signInWithEmailAndPassword(email, password)
+    //         .then(res => {
+    //             console.log(res.user)
+    //             console.log(res)
+    //             logUserIn(res.user)
+    //         })
+    //         .catch(err => {
+    //             console.log(err)
+    //         })
+    // }
 
-    console.log(Cookie.getJSON('user'))  
+    console.log(Cookie.getJSON('user')) 
 
     return (
         <Container>
