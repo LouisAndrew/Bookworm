@@ -1,13 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
+import { useRouter } from 'next/router'
 
 const SearchBar = () => {
 
-    console.log('refactoring..')
+    const router = useRouter()
+    const ref = React.createRef()
+    const [ search, setSearch ] = useState('')
+
+    const input = e => {
+        setSearch(e.target.value)
+    }
+ 
+    const searchFor = e => {
+        e.preventDefault()
+        ref.current.value = ''
+        router.push({ pathname: '/search', query: { q: search } })
+    }
 
     return (
-        <Container id='search-bar' className='wrap'>
-            <input type='text' placeholder='Search Here..' />
+        <Container onSubmit={searchFor} id='search-bar' className='wrap'>
+            <input onChange={input} ref={ref} type='text' placeholder='Search Here..' />
         </Container>
     )
 }
@@ -19,6 +32,7 @@ const Container = styled.form`
     max-height: 0;
     overflow: hidden;
     transition: max-height 1s linear;
+    /* still lagged on the display animation */
 
     input {
         width: 100%;

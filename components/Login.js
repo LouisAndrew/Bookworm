@@ -36,6 +36,7 @@ const Login = () => {
 
     const loginWithGoogle = () => {
         const googleProvider = new auth.GoogleAuthProvider()
+        console.log(auth)
 
         auth().signInWithPopup(googleProvider)
             .then(res => {
@@ -59,9 +60,8 @@ const Login = () => {
             })
     }
 
-    console.log(Cookie.getJSON('user'))
+    console.log(Cookie.getJSON('user'))  
 
-    
     return (
         <Container>
             <LoginHeader className='login-head' />

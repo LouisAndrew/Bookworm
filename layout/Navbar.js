@@ -8,7 +8,7 @@ const Navbar = ({ isLoggedIn }) => {
     return (
         <Container>
             <h3>BookWorm</h3>
-            <Navi display={isLoggedIn ? true: false} />
+            <Navi display={isLoggedIn && true} />
         </Container>
     )
 }

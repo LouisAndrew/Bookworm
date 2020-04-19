@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
 import Search from '../../assets/search.svg'
 
 const Navi = ({ display }) => {
+
+    const [ isLogged, setIsLogged ] = useState(display)
+
+    console.log(isLogged)
 
     const clickSearch = () => {
 
@@ -16,7 +20,7 @@ const Navi = ({ display }) => {
     }
 
     return (
-        <Container display={display}>
+        <Container display={isLogged}>
             <Item>
                 <Link href='/'>
                     <a>Feeds</a>
@@ -88,5 +92,7 @@ const Container = styled.ul`
     height: 100%;
     list-style: none;
     display: ${props => props.display ? 'flex' : 'none'};
+    /* figure out how tf to implement that 🖕 */
+    /* display: flex; */
 
 `
