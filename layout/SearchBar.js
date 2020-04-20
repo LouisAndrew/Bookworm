@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
 
+import { clickSearch } from './navigation/Navi'
+
 const SearchBar = () => {
 
     const router = useRouter()
@@ -16,6 +18,7 @@ const SearchBar = () => {
         e.preventDefault()
         ref.current.value = ''
         router.push({ pathname: '/search', query: { q: search } })
+        clickSearch()
     }
 
     return (

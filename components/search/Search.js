@@ -11,6 +11,7 @@ const Search = () => {
     const [ result, setResult ] = useState({  })
     const [ routerDoesExist, setRouterDoesExist ] = useState(false)
     const [ sortBy, setSortBy ] = useState('relevance')
+    const [ query, setQuery ] = useState('')
     const [ startIndex, setStartIndex ] = useState(0)
     const [ maxResult, setMaxResult ] = useState(10)
     const { user } = useContext(UserContext)
@@ -20,6 +21,7 @@ const Search = () => {
     useEffect(() => {
         if (router && router.query.q && !routerDoesExist) {
             setRouterDoesExist(true)
+            setQuery(router.query.q)
         }
     })
 
@@ -41,8 +43,10 @@ const Search = () => {
         }
     }
     
-    console.log(result)
-    console.log(isLoading, 'is loading')
+    if (result.items && query !== router.query.q) {
+        setResult({ })
+        setQuery(router.query.q)
+    }
 
     return (
         <>

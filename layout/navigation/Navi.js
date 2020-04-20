@@ -3,21 +3,19 @@ import styled from 'styled-components'
 import Link from 'next/link'
 import Search from '../../assets/search.svg'
 
+export const clickSearch = () => {
+
+    const toggleClassElements = [
+        document.getElementById('search'),
+        document.getElementById('search-bar')
+    ]
+
+    toggleClassElements.forEach(el => el.classList.toggle('searching'))
+}
+
 const Navi = ({ display }) => {
 
     const [ isLogged, setIsLogged ] = useState(display)
-
-    console.log(isLogged)
-
-    const clickSearch = () => {
-
-        const toggleClassElements = [
-            document.getElementById('search'),
-            document.getElementById('search-bar')
-        ]
-
-        toggleClassElements.forEach(el => el.classList.toggle('searching'))
-    }
 
     return (
         <Container display={isLogged}>
