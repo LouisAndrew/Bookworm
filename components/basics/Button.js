@@ -45,7 +45,7 @@ const Container = styled.button`
     outline: none;
     border: ${props => props.border};;
     font-weight: bold;
-    box-shadow: 1px 1px rgba(21, 21, 21, 0.6);
+    /* box-shadow: 1px 1px rgba(21, 21, 21, 0.6); */
 
     &:hover {
         cursor: pointer;

@@ -1,9 +1,9 @@
 import Layout from "../layout"
-import Login from '../components/Login'
+import LoginWrapper from '../components/Login/LoginWrapper'
 
 const LoginPage = () => (
     <Layout>
-        <Login />
+        <LoginWrapper />
     </Layout>
 )
 

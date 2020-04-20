@@ -1,19 +1,23 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useRouter } from 'next/router'
 
 import { setQueryToUppercase, fetchVolumeData } from '../helper'
+import { UserContext } from '../helper/UserContext'
 
 const Search = () => {
 
     const router = useRouter()
     const [ result, setResult ] = useState({  })
     const [ routerDoesExist, setRouterDoesExist ] = useState(false)
+    const { user } = useContext(UserContext)
     
     useEffect(() => {
-        if (router && router.query && !routerDoesExist) {
+        if (router && router.query.q && !routerDoesExist) {
             setRouterDoesExist(true)
         }
     })
+
+    console.log(user)
 
     const fetchDataNeeded = async() => {
 

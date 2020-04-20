@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
+
+import { UserContextConsumer } from '../helper/UserContext'
 import useGoogleFont from '../hooks/useGoogleFont'
 import Navbar from './Navbar'
 import SearchBar from './SearchBar'

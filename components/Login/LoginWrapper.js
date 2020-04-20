@@ -1,17 +1,17 @@
-import React, { useState } from 'react'
-import { auth, firebaseApp } from '../lib/firebase'
+import React, { useState, useContext } from 'react'
+import { auth, firebaseApp } from '../../lib/firebase'
 import Cookie from 'js-cookie'
 import { useRouter } from 'next/router'
-
 import styled from 'styled-components'
-import Button from './Button'
-import LoginHeader from './LoginHeader'
-import SignIn from './SignIn'
 
-const Login = () => {
+import { UserContext } from '../../helper/UserContext'
+import Button from '../basics/Button'
+import LoginHeader from './LoginHeader'
+
+const LoginWrapper = () => {
 
     const router = useRouter()
-    const [ user, setUser ] = useState({ })
+    const { user, addUser } = useContext(UserContext)
 
     const defineExpiration = () => {
 
@@ -25,12 +25,12 @@ const Login = () => {
     const logUserIn = user => {
 
         console.log(user)
-        setUser(user)
+        // setUser(user)
         Cookie.set('user', JSON.stringify(user), { expires: defineExpiration() })
         document.getElementById('head').innerText = `hello ${user.displayName}`
 
         setTimeout(() => {
-            router.back()
+            router.push('/')
         }, 500)
     }
 
@@ -46,47 +46,24 @@ const Login = () => {
             })
     }
 
-    // const loginWithEmail = (email, password) => {
-
-    //     auth().signInWithEmailAndPassword(email, password)
-    //         .then(res => {
-    //             console.log(res.user)
-    //             console.log(res)
-    //             logUserIn(res.user)
-    //         })
-    //         .catch(err => {
-    //             console.log(err)
-    //         })
-    // }
-
     console.log(Cookie.getJSON('user')) 
 
     return (
         <Container>
             <LoginHeader className='login-head' />
             <h3 id='head'></h3>
-            {/* <SignIn loginWithEmail={loginWithEmail} /> */}
             <Button onClick={loginWithGoogle} color='#000' bColor='#fff' border='3px solid #000' text='Login With Google' />
         </Container>
     )
 }
 
-export default Login
+export default LoginWrapper
 
 const Container = styled.section`
     width: 100%;
     min-height: 92vh;
-    padding: 5% 10%;
     ${({ theme }) => theme.center()};
     flex-flow: column nowrap;
-
-    .login-head {
-        margin-bottom: 2vh;
-    }
-
-    form {
-        margin: 2vh 0;
-    }
 
     @media only screen and (max-width: 850px) {
         
