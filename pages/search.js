@@ -1,16 +1,11 @@
-import React, { useState } from 'react'
-import { useRouter } from 'next/router'
+import React from 'react'
 
 import Layout from '../layout'
-import Search from '../components/Search'
+import Search from '../components/search/Search'
 
 const SearchPage = () => {
-
-    const router = useRouter()
-
     return (
         <Layout>
-            <h1>query: {router.query.q} </h1>
             <Search />
         </Layout>
     )

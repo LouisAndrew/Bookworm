@@ -11,8 +11,6 @@ import LoginHeader from './LoginHeader'
 const LoginWrapper = () => {
 
     const router = useRouter()
-    const { user, addUser } = useContext(UserContext)
-
     const defineExpiration = () => {
 
         const now = new Date().getTime()
@@ -24,9 +22,9 @@ const LoginWrapper = () => {
 
     const logUserIn = user => {
 
-        console.log(user)
-        // setUser(user)
-        Cookie.set('user', JSON.stringify(user), { expires: defineExpiration() })
+        // Cookie.set('user', JSON.stringify(user), { expires: defineExpiration() })
+        //ambil yg atas wkt production!!
+        Cookie.set('user', JSON.stringify(user))
         document.getElementById('head').innerText = `hello ${user.displayName}`
 
         setTimeout(() => {
@@ -45,8 +43,6 @@ const LoginWrapper = () => {
                 console.log(err)
             })
     }
-
-    console.log(Cookie.getJSON('user')) 
 
     return (
         <Container>

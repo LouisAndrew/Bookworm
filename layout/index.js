@@ -59,6 +59,18 @@ const Layout = props => {
        .wrap {
             padding: 0 15%;
        }
+
+       @media only screen and (max-width: 464px) {
+            
+            :root {
+                font-size: 12px;
+            }
+
+            .wrap {
+                padding: 0 5%;
+            }
+                
+      }
     `
 
     const router = useRouter()

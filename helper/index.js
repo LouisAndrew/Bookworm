@@ -6,8 +6,15 @@ export const setQueryToUppercase = query => {
     return joinQuery
 }
 
-export const fetchVolumeData = async(query) => {
-    const rq = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}`)
+/**
+ * 
+ * @param {*} query 
+ * @param {*} sortBy 
+ * @param {*} startIndex 
+ * @param {*} maxResult 
+ */
+export const fetchVolumeData = async(query, sortBy, startIndex, maxResult ) => {
+    const rq = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&sortBy=${sortBy}&startIndex=${startIndex}&maxResult=${maxResult}`)
     const rsp = await rq.ok ? rq.json() : false
     return rsp
 }
