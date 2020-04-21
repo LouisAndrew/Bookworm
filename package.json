@@ -14,6 +14,7 @@
     "jest": "^25.3.0",
     "js-cookie": "^2.2.1",
     "next": "9.3.5",
+    "node-fetch": "^2.6.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "styled-components": "^5.1.0"
