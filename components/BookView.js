@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import styled from 'styled-components'
 
 import Book from './basics/Book'
@@ -6,20 +6,19 @@ import { extract } from './search/Result'
 import Button from './basics/Button'
 import { UserContext } from '../helper/UserContext'
 import { submitRev } from '../helper'
+import RevContainer from './RevContainer'
 
-const BookView = ({ data, dbData }) => {
-
-      console.log(data, 'data')
-      console.log(dbData, 'dbData')
+const BookView = ({ data }) => {
 
       const volumeInfo = data && extract(data)
+      const bookName = data.volumeInfo.title
 
       return (
             <Container>
                   <Content className='wrap'>
 
                         <Item>
-                              <BookDetails bookId={data.id} info={data.volumeInfo.subtitle} />
+                              <BookDetails  bookName={bookName} bookId={data.id} info={data.volumeInfo.subtitle} />
                         </Item>
                         <Item className='right'>
                               <Book {...volumeInfo}  />
@@ -69,13 +68,36 @@ const Container = styled.div`
 `
 
 
-const BookDetails = ({ reviews, info, bookId }) => {
+const BookDetails = ({ reviews, info, bookId, bookName }) => {
       const ctx = useContext(UserContext)
+      const [ rev, setRev ] = useState()
+      const [ hotReload, setHotReload ] = useState(false)
+      const inputRef = React.createRef()
+
+      const change = e => {
+            setRev(e.target.value)
+      }
 
       const submitReview = e => {
             e.preventDefault()
-            submitRev()
+            submitRev(ctx.user, rev, bookId)
+            
+            //force the rev container to reload after submitting...
+            setHotReload(true)
+            setRev('')
+            inputRef.current.value = ''
       }
+
+      useEffect(() => {
+
+            if (hotReload) {
+
+                  //set the hot reload off
+                  setTimeout(() => {
+                        setHotReload(false)
+                  }, 200)
+            }
+      }, [ hotReload ])
 
       return (
             <>
@@ -83,9 +105,10 @@ const BookDetails = ({ reviews, info, bookId }) => {
                         <h4>{info} </h4>
                   </Det>
                   <WriteRev onSubmit={submitReview}>
-                        <input placeholder='Post a review' type='text' />
+                        <input ref={inputRef} onChange={change} placeholder='Post a review' type='text' />
                         <Button onClick={submitReview} color='#fff' bColor='#000' border='3px solid #000' text='Submit' />
                   </WriteRev>
+                  { !hotReload && <RevContainer bookName={bookName} bookId={bookId} /> }
             </>
       )
 }

@@ -4,31 +4,39 @@ import { db } from '../lib/firebase'
 
 const useFirestoreBook = bookId => {
 
-    const [ book, setBook ] = useState({ })
+    const [ rev, setRev ] = useState({ })
+    const [ loaded, setLoaded ] = useState(false)
     
-    const fetchBookData = bookId => {
+    const fetchBookRev = bookId => {
         
-        const dbBookRef = db().collection('Books').doc(bookId)
-        //get book data
-        dbBookRef.get()
-            .then(doc => {
+        const dbBookRef = db().collection('Reviews')
 
-                if (doc.exists) {
-                    setBook(doc.data())
-                } else {
-                    setBook(false)
-                }
+        //get book data
+        dbBookRef.where('bookId', '==', bookId)
+            .get()
+            .then(querySnapshot => {
+
+                let temp = [ ]
+                querySnapshot.forEach(doc => {
+                    temp = [...temp, doc.data()]
+                })
+
+                setRev(temp)
+            })
+            .catch(err => {
+                console.log(err)
             })
     }
 
     useEffect(() => {
-
-        if (!book.reviews) {
-            fetchBookData(bookId)
-        } 
+        
+        if (!loaded) {
+            setLoaded(true)
+            fetchBookRev(bookId)
+        }
     })
 
-    return book
+    return rev
 }
 
 export default useFirestoreBook

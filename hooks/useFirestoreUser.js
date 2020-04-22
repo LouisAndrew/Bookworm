@@ -41,3 +41,26 @@ const useFirestoreUser = userFromCookie => {
 }
 
 export default useFirestoreUser
+
+export const useUserData = uid => {
+
+    const [ user, setUser ] = useState({ })
+
+    const fetchUser = uid => {
+
+        const dbRef = db().collection('User').doc(uid)
+
+        dbRef.get()
+            .then(doc => doc.exists && setUser(doc.data()))
+            .catch(err => console.log(err))
+    }
+
+    useEffect(() => {
+
+        if (!user.uid) {
+            fetchUser(uid)
+        }
+    })
+
+    return user
+}

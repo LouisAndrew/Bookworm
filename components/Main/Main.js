@@ -1,9 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react'
 import Cookie from 'js-cookie'
-import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
-import { db } from '../../lib/firebase'
 import Feed from './Feed'
 import ProfileFeed from './ProfileFeed'
 import useFirestoreUser from '../../hooks/useFirestoreUser'
@@ -22,8 +20,6 @@ const Main = () => {
         ctx.addUser(userData)
         setUser(userData)
     }
-
-    console.log(user)
 
     return (
         <Container className='wrap'>

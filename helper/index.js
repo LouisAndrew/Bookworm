@@ -16,12 +16,12 @@ export const fetchVolumeData = async(query, sortBy, startIndex, maxResult ) => {
 
 export const submitRev = (user, rev, bookId) => {
 
-    const dbRef = db().collection('Books').doc(bookId).collection('Reviews').doc()
+    const dbRef = db().collection('Reviews').doc()
 
     const data = {
+        bookId,
         rev,
         uid: user.uid,
-        name: user.displayName,
     }
     
     dbRef.set(data)

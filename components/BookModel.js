@@ -6,9 +6,7 @@ import BookView from './BookView'
 
 const BookModel = props => {
 
-    const [ bookData, setBokData ] = useState(useFirestoreBook(props.id))
-
-    return <BookView data={props} dbData={bookData} />
+    return <BookView data={props} />
 }
 
 export default BookModel
