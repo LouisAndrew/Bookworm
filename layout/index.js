@@ -20,6 +20,9 @@ const Layout = props => {
             height: 100%;
             width: 100%;
         `),
+        shadow: () => (`
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+        `),
         pink: '#FFA987',
         bg: '#F7EBE8',
         gray: '#444140',

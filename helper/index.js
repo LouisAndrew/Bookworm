@@ -1,3 +1,5 @@
+import { db } from '../lib/firebase'
+
 export const setQueryToUppercase = query => {
 
     const querySplitted = query.split(' ')
@@ -6,15 +8,22 @@ export const setQueryToUppercase = query => {
     return joinQuery
 }
 
-/**
- * 
- * @param {*} query 
- * @param {*} sortBy 
- * @param {*} startIndex 
- * @param {*} maxResult 
- */
 export const fetchVolumeData = async(query, sortBy, startIndex, maxResult ) => {
     const rq = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&sortBy=${sortBy}&startIndex=${startIndex}&maxResult=${maxResult}`)
     const rsp = await rq.ok ? rq.json() : false
     return rsp
+}
+
+export const submitRev = (user, rev, bookId) => {
+
+    const dbRef = db().collection('Books').doc(bookId).collection('Reviews').doc()
+
+    const data = {
+        rev,
+        uid: user.uid,
+        name: user.displayName,
+    }
+    
+    dbRef.set(data)
+        .catch(err => console.log(err))
 }

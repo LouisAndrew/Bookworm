@@ -3,23 +3,22 @@ import styled from 'styled-components'
 
 import Book from '../basics/Book'
 
-const Result = ({ items, query }) => {
-
-    console.log(items)
+export const extract = item => {
 
     const undefinedItem = 'No further details'
 
-    const extract = item => {
-
-        const temp = {
-            imgUrl: item.volumeInfo.imageLinks && item.volumeInfo.imageLinks.thumbnail,
-            heading: item.volumeInfo.title ? item.volumeInfo.title: undefinedItem,
-            subheading: item.volumeInfo.authors ? item.volumeInfo.authors[0] : undefinedItem,
-            id: item.id
-        }
-
-        return temp
+    const temp = {
+        imgUrl: item.volumeInfo.imageLinks && item.volumeInfo.imageLinks.thumbnail,
+        heading: item.volumeInfo.title ? item.volumeInfo.title: undefinedItem,
+        subheading: item.volumeInfo.authors ? item.volumeInfo.authors[0] : undefinedItem,
+        id: item.id
     }
+
+    return temp
+}
+
+const Result = ({ items, query }) => {
+
 
     return (
         <Container>

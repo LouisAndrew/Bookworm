@@ -13,11 +13,11 @@ const Main = () => {
 
     const [ user, setUser ] = useState({ })
     const ctx = useContext(UserContext)
-    const { photoURL, displayName } = useFirestoreUser(Cookie.getJSON('user'))
+    const { photoURL, displayName, uid } = useFirestoreUser(Cookie.getJSON('user'))
 
     if (displayName && !user.displayName) {
 
-        const userData = { photoURL, displayName }
+        const userData = { photoURL, displayName, uid }
 
         ctx.addUser(userData)
         setUser(userData)

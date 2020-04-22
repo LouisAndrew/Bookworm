@@ -2,15 +2,13 @@ import React from 'react'
 import fetch from 'node-fetch'
 
 import Layout from '../../layout'
+import BookModel from '../../components/BookModel'
 
-const BookPage = ({ data, bid }) => {
-
-    console.log(data)
-    console.log(bid)
-
+const BookPage = ({ data }) => {
+    
     return (
         <Layout>
-            
+            <BookModel {...data} />
         </Layout>
     )
 }
@@ -30,7 +28,6 @@ export const getServerSideProps = async({ params: { bid: bid } }) => {
     return {
         props: {
             data,
-            bid
         }
     }
 }
