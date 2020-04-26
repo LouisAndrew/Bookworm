@@ -57,11 +57,14 @@ export default LoginWrapper
 
 const Container = styled.section`
     width: 100%;
-    min-height: 92vh;
     ${({ theme }) => theme.center()};
     flex-flow: column nowrap;
 
-    @media only screen and (max-width: 850px) {
+    position: absolute;
+    top: 40%;
+    transform: translate(0, -40%);
+
+    @media only screen and (max-width: 840px) {
         
         padding: 10%;
     }

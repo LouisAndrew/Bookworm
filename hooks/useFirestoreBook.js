@@ -12,7 +12,9 @@ const useFirestoreBook = bookId => {
         const dbBookRef = db().collection('Reviews')
 
         //get book data
-        dbBookRef.where('bookId', '==', bookId)
+        dbBookRef
+            .where('bookId', '==', bookId)
+            .orderBy('dateCreated', 'desc')
             .get()
             .then(querySnapshot => {
 

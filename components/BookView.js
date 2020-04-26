@@ -18,7 +18,7 @@ const BookView = ({ data }) => {
                   <Content className='wrap'>
 
                         <Item>
-                              <BookDetails  bookName={bookName} bookId={data.id} info={data.volumeInfo.subtitle} />
+                              <BookDetails bookName={bookName} bookId={data.id} info={data.volumeInfo.subtitle} />
                         </Item>
                         <Item className='right'>
                               <Book {...volumeInfo}  />
@@ -49,6 +49,11 @@ const Item = styled.div`
                         text-align: center;
                         /* override style rule from Book */
                         margin: 5vh 0;
+
+                        @media screen and (max-width: 840px) {
+                              
+                              margin-bottom: 0;
+                        }
                   }
             }
       }
@@ -58,17 +63,23 @@ const Content = styled.section`
 
       width: 100%;
       display: flex;
-  
+      
+      @media screen and (max-width: 840px) {
+            
+            flex-direction: column-reverse;
+      }
 `
 
 const Container = styled.div`
 
       width: 100%;
       ${({ theme }) => theme.center()}
+
 `
 
 
 const BookDetails = ({ reviews, info, bookId, bookName }) => {
+
       const ctx = useContext(UserContext)
       const [ rev, setRev ] = useState()
       const [ hotReload, setHotReload ] = useState(false)

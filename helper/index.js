@@ -18,9 +18,12 @@ export const submitRev = (user, rev, bookId) => {
 
     const dbRef = db().collection('Reviews').doc()
 
+    const date = new Date()
+
     const data = {
         bookId,
         rev,
+        dateCreated: date,
         uid: user.uid,
     }
     

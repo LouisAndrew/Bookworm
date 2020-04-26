@@ -25,4 +25,15 @@ const Container = styled.nav`
 
     padding: 0 15%;
     box-shadow: 2px 2px 5px #ddd;
+    
+    #menu {
+        display: none;
+    }
+
+    @media screen and (max-width: 840px) {
+        
+        #menu {
+            display: block;
+        }
+    }
 `

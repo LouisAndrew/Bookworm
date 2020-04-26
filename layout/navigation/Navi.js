@@ -1,13 +1,16 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
+
+import Menu from '../../assets/menu.svg'
 import Search from '../../assets/search.svg'
 
 export const clickSearch = () => {
 
     const toggleClassElements = [
         document.getElementById('search'),
-        document.getElementById('search-bar')
+        document.getElementById('search-bar'),
+        document.getElementById('nv')
     ]
 
     toggleClassElements.forEach(el => el.classList.toggle('searching'))
@@ -17,27 +20,35 @@ const Navi = ({ display }) => {
 
     const [ isLogged, setIsLogged ] = useState(display)
 
+    const clickMenu = () => {
+
+        document.getElementById('nv').classList.toggle('active')
+    }
+
     return (
-        <Container display={isLogged}>
-            <Item>
-                <Link href='/'>
-                    <a>Feeds</a>
-                </Link>
-            </Item>
-            <Item>
-                <Link href='/profile'>
-                    <a>Profile</a>
-                </Link>
-            </Item>
-            <Item>
-                <Link href='/books'>
-                    <a>Books</a>
-                </Link>
-            </Item>
-            <Item onClick={clickSearch} className='no-up'>
-                <Search id='search' />
-            </Item>
-        </Container>
+        <>
+            <Menu onClick={clickMenu} id='menu' />
+            <Container id='nv'  display={isLogged}>
+                <Item>
+                    <Link href='/'>
+                        <a>Feeds</a>
+                    </Link>
+                </Item>
+                <Item>
+                    <Link href='/profile'>
+                        <a>Profile</a>
+                    </Link>
+                </Item>
+                <Item>
+                    <Link href='/books'>
+                        <a>Books</a>
+                    </Link>
+                </Item>
+                <Item onClick={clickSearch} className='no-up'>
+                    <Search id='search' />
+                </Item>
+            </Container>
+        </>
     )
 }
 
@@ -83,6 +94,32 @@ const Item = styled.li`
         }
 
     }
+
+    @media screen and (max-width: 840px) {
+
+        margin: 0;
+        height: auto;
+        width: 100%;
+
+        display: flex;
+        justify-content: center;
+
+        #search {
+            order: 1;
+            margin: 2vh 0;
+        }
+
+        a {
+            order: 2;
+            padding: 2vh 0;
+            font-size: 1.5rem;
+        }
+/* 
+        a {
+            display: flex;
+            justify-content: center;
+        } */
+    }
 `
 
 const Container = styled.ul`
@@ -92,5 +129,32 @@ const Container = styled.ul`
     display: ${props => props.display ? 'flex' : 'none'};
     /* figure out how tf to implement that 🖕 */
     /* display: flex; */
+
+    @media screen and (max-width: 840px) {
+        
+        height: 92vh;
+        width: 100%;
+        position: absolute;
+        top: 8vh;
+        left: 0;
+        max-width: 0;
+        overflow: hidden;
+
+        padding: 2vh 0;
+        z-index: 2;
+
+        transition: .2s, max-width .5s;
+        background-color: #fff;
+        flex-direction: column;
+
+        &.searching {
+
+            transform: translateY(5rem);
+        }
+
+        &.active {
+            max-width: 100vh;
+        }
+    }
 
 `

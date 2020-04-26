@@ -8,6 +8,7 @@ const RevContainer = ({ bookId, bookName }) => {
 
       const collected = useFirestoreBook(bookId)
       console.log(bookName)
+      console.log(collected)
 
       return (
             <>
