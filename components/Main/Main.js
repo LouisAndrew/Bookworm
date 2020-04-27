@@ -39,10 +39,15 @@ const Content = styled.section`
     display: flex;
     margin-top: 10vh;
     width: 100%;
-    background-color: pink;
 
     .flex-item {
-        width: 50%;    }
+        width: 100%;    
+    }
+
+    @media screen and (max-width: 840px) {
+        
+        flex-direction: column-reverse;
+    }
 `
 
 const Container = styled.div`

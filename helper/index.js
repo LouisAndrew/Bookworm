@@ -14,7 +14,7 @@ export const fetchVolumeData = async(query, sortBy, startIndex, maxResult ) => {
     return rsp
 }
 
-export const submitRev = (user, rev, bookId) => {
+export const submitRev = (user, rev, bookId, bookName) => {
 
     const dbRef = db().collection('Reviews').doc()
 
@@ -23,6 +23,7 @@ export const submitRev = (user, rev, bookId) => {
     const data = {
         bookId,
         rev,
+        bookName,
         dateCreated: date,
         uid: user.uid,
     }

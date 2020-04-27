@@ -91,7 +91,7 @@ const BookDetails = ({ reviews, info, bookId, bookName }) => {
 
       const submitReview = e => {
             e.preventDefault()
-            submitRev(ctx.user, rev, bookId)
+            submitRev(ctx.user, rev, bookId, bookName)
             
             //force the rev container to reload after submitting...
             setHotReload(true)

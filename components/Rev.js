@@ -1,8 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
+import Link from 'next/link'
+
 import { useUserData } from '../hooks/useFirestoreUser'
 
-const Rev = ({ uid , rev, bookName, dateCreated }) => {
+const Rev = ({ uid , rev, bookName, dateCreated, bookId }) => {
 
       const setMonth = monthNum => {
 
@@ -18,7 +20,7 @@ const Rev = ({ uid , rev, bookName, dateCreated }) => {
             <Container>
                   <img src={user.photoURL} />
                   <div>
-                        <h4><span>{user.displayName} </span> commented on <span>{bookName} </span> </h4>
+                        <h4><span>{user.displayName} </span> commented on <Link href={`/books/${bookId}`}><a><span>{bookName} </span></a></Link> </h4>
                         <h6>{time} </h6>
                         <p>{rev} </p>
                   </div>
@@ -44,10 +46,10 @@ const Container = styled.div`
       div {
             
             padding: 0 5%;
+            font-weight: normal;
 
             h3 span {
                   font-size: 1.5rem;
-                  font-weight: bolder;
             }
 
             h6 {
@@ -56,6 +58,18 @@ const Container = styled.div`
 
             p {
                   margin: 5% 0;
+            }
+
+            a {
+                  text-decoration: none;
+                  color: #000;
+                  transition: .2s;
+
+                  &:hover {
+
+                        font-weight: bold;
+                        text-decoration: underline;
+                  }
             }
       }
 
