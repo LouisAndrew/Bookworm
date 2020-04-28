@@ -22,9 +22,9 @@ const LoginWrapper = () => {
 
     const logUserIn = user => {
 
-        // Cookie.set('user', JSON.stringify(user), { expires: defineExpiration() })
+        Cookie.set('user', JSON.stringify(user), { expires: defineExpiration() })
         //ambil yg atas wkt production!!
-        Cookie.set('user', JSON.stringify(user))
+        // Cookie.set('user', JSON.stringify(user))
         document.getElementById('head').innerText = `hello ${user.displayName}`
 
         setTimeout(() => {
