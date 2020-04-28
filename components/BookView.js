@@ -85,9 +85,36 @@ const BookDetails = ({ reviews, info, bookId, bookName }) => {
       const [ hotReload, setHotReload ] = useState(false)
       const inputRef = React.createRef()
 
+      // const resizeTextArea = () => {
+
+      //       inputRef.style.height = '1px'
+      //       inputRef.style.height = `${25 + e.scrollHeight}px`
+      // }
+
+      const resizeTextArea = e => {
+
+            const el = e.target
+            el.style.height = '10px'
+            e.target.style.height = `${e.target.scrollHeight}px`
+      }
+
       const change = e => {
             setRev(e.target.value)
+            resizeTextArea(e)
       }
+
+      // function adjustHeight(textareaElement, minHeight) {
+      //       // compute the height difference which is caused by border and outline
+      //       var outerHeight = parseInt(window.getComputedStyle(el).height, 10);
+      //       var diff = outerHeight - el.clientHeight;
+    
+      //       // set the height to 0 in case of it has to be shrinked
+      //       el.style.height = 0;
+    
+      //       // set the correct height
+      //       // el.scrollHeight is the full height of the content, not just the visible part
+      //       el.style.height = Math.max(minHeight, el.scrollHeight + diff) + 'px';
+      //   }
 
       const submitReview = e => {
             e.preventDefault()
@@ -116,8 +143,13 @@ const BookDetails = ({ reviews, info, bookId, bookName }) => {
                         <h4>{info} </h4>
                   </Det>
                   <WriteRev onSubmit={submitReview}>
-                        <input ref={inputRef} onChange={change} placeholder='Post a review' type='text' />
-                        <Button onClick={submitReview} color='#fff' bColor='#000' border='3px solid #000' text='Submit' />
+                        {/* <input ref={inputRef} onChange={change} placeholder='Post a review' type='textarea' /> */}
+                        <textarea placeholder='Post a review' ref={inputRef} onChange={change}>
+
+                        </textarea>
+                        <div>
+                              <Button onClick={submitReview} color='#fff' bColor='#000' border='3px solid #000' text='Submit' />
+                        </div>
                   </WriteRev>
                   { !hotReload && <RevContainer bookName={bookName} bookId={bookId} /> }
             </>
@@ -128,13 +160,19 @@ const WriteRev = styled.form`
       width: 100%;
       padding: 5% 10%;
       ${({ theme }) => theme.center()};
+      justify-content: flex-start;
 
-      input {
+      #input, textarea {
             width: 100%;
+            min-height: 10px;
+
             padding: 1vh 2vh;
             border: none;
             border-left: 2px solid #000;
             outline: none;
+
+            resize: vertical;
+            overflow: hidden;
       }
 `
 
