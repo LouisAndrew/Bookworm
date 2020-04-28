@@ -6,7 +6,7 @@ const useGoogleFont = () => {
 
         const font = document.createElement('link')
 
-        font.href = 'https://fonts.googleapis.com/css2?family=Rubik&display=swap'
+        font.href = 'https://fonts.googleapis.com/css2?family=Muli&display=swap'
         font.rel = 'stylesheet'
 
         document.head.appendChild(font)
