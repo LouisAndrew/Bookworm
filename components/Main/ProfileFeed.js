@@ -20,23 +20,21 @@ const ProfileFeed = ({ user }) => {
 export default ProfileFeed
 
 const Content = styled.div`
-    width: 80%;
     background-color: rgba(233, 233, 233, 0.7);
     border-radius: 15px;
     padding: 5%;
 
     display: flex;
-    flex-direction: column;
     align-items: center;
 
     img {
-        height: 200px;
-        width: 200px;
+        height: 175px;
+        width: 175px;
         border-radius: 50%;
     }
 
     h2 {
-        margin: 3vh 0;
+        margin: 0 3vh;
     }
 
     @media screen and (max-width: 840px) {
@@ -55,7 +53,7 @@ const Content = styled.div`
         
         img {
             height: 125px;
-            width: 125spx;
+            width: 125px;
         }
 
         h2 {
