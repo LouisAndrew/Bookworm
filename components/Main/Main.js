@@ -1,25 +1,13 @@
-import React, { useEffect, useState, useContext } from 'react'
-import Cookie from 'js-cookie'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 
 import Feed from './Feed'
 import ProfileFeed from './ProfileFeed'
-import useFirestoreUser from '../../hooks/useFirestoreUser'
 import { UserContext } from '../../helper/UserContext'
 
 const Main = () => {
 
-    const [ user, setUser ] = useState({ })
-    const ctx = useContext(UserContext)
-    const { photoURL, displayName, uid } = useFirestoreUser(Cookie.getJSON('user'))
-
-    if (displayName && !user.displayName) {
-
-        const userData = { photoURL, displayName, uid }
-
-        ctx.addUser(userData)
-        setUser(userData)
-    }
+    const { user } = useContext(UserContext)
 
     return (
         <Container className='wrap'>

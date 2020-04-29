@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 export const UserContext = React.createContext({ })
 
@@ -10,8 +10,11 @@ const UserContextProvider = props => {
 
     const addUser = user => {
         setUser(user)
+        return new Promise((res, rej) => {
+            res('success')
+        })
     }
-
+    
     const removeUser = () => {
         setUser({ })
     }

@@ -81,6 +81,7 @@ const Container = styled.div`
 const BookDetails = ({ reviews, info, bookId, bookName }) => {
 
       const ctx = useContext(UserContext)
+      console.log(ctx, 'context')
       const [ rev, setRev ] = useState()
       const [ hotReload, setHotReload ] = useState(false)
       const inputRef = React.createRef()

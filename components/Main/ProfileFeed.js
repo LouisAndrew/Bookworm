@@ -3,8 +3,6 @@ import styled from 'styled-components'
 
 const ProfileFeed = ({ user }) => {
 
-    console.log(user)
-
     return (
         <Container>
             <div>

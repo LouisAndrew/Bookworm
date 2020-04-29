@@ -8,9 +8,6 @@ const Feed = () => {
 
     const revs = useNewestRev()
 
-    console.log(revs)
-
-
     return (
         <Container>
             <h1>Feed</h1>

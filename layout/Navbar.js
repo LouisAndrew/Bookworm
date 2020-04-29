@@ -3,12 +3,12 @@ import styled from 'styled-components'
 
 import Navi from './navigation/Navi'
 
-const Navbar = ({ isLoggedIn }) => {
+const Navbar = () => {
 
     return (
         <Container>
             <h3>BookWorm</h3>
-            <Navi display={isLoggedIn && true} />
+            <Navi />
         </Container>
     )
 }

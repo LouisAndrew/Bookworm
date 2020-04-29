@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 
-import { UserContextConsumer } from '../helper/UserContext'
 import useGoogleFont from '../hooks/useGoogleFont'
 import Navbar from './Navbar'
 import SearchBar from './SearchBar'
-import Cookie from 'js-cookie'
-import { useRouter } from 'next/router'
 
 const Layout = props => {
 
@@ -76,23 +73,13 @@ const Layout = props => {
       }
     `
 
-    const router = useRouter()
-    const [ user, setUser ] = useState(Cookie.getJSON('user'))
-
-    useEffect(() => {
-
-        if (!user.displayName && router.pathname !== '/login') {
-            router.push('/login')
-        }
-    })
-
     useGoogleFont()
     
     return (
         <>
             <Global />
             <ThemeProvider theme={theme}>
-                <Navbar isLoggedIn={user} />
+                <Navbar />
                 <SearchBar />
                 {props.children}
             </ThemeProvider>

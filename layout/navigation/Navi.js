@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 import Menu from '../../assets/menu.svg'
 import Search from '../../assets/search.svg'
+import { UserContext } from '../../helper/UserContext'
 
 export const clickSearch = () => {
 
@@ -16,19 +18,35 @@ export const clickSearch = () => {
     toggleClassElements.forEach(el => el.classList.toggle('searching'))
 }
 
-const Navi = ({ display }) => {
+const Navi = () => {
 
-    const [ isLogged, setIsLogged ] = useState(display)
+    //all based on user provided by user context
+    const router = useRouter()
+    const [ isLogged, setIsLogged ] = useState(false)
+    const { user } = useContext(UserContext)
 
     const clickMenu = () => {
 
         document.getElementById('nv').classList.toggle('active')
     }
 
+    useEffect(() => {
+
+        //if there's no user (indicated by the display name) => go to login page...
+        if (!user.displayName && router.pathname !== '/login') {
+            router.push('/login')
+        } else {
+
+            if (!isLogged) {
+                setIsLogged(true)
+            }
+        }
+    })
+
     return (
         <>
             <Menu onClick={clickMenu} id='menu' />
-            <Container id='nv'  display={isLogged}>
+            <Container id='nv' display={isLogged}>
                 <Item>
                     <Link href='/'>
                         <a>Feeds</a>
