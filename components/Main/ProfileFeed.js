@@ -25,7 +25,9 @@ const Content = styled.div`
     padding: 5%;
 
     display: flex;
+    flex-flow: column wrap;
     align-items: center;
+    justify-content: center;
 
     img {
         height: 175px;
@@ -34,7 +36,8 @@ const Content = styled.div`
     }
 
     h2 {
-        margin: 0 3vh;
+        margin: 3vh 0;
+        width: fit-content;
     }
 
     @media screen and (max-width: 840px) {
@@ -45,19 +48,19 @@ const Content = styled.div`
         margin-bottom: 10%;
 
         h2 {
-            margin: 0 5%;
+            margin: 5%;
         }
     }
 
     @media screen and (max-width: 464px) {
         
         img {
-            height: 125px;
-            width: 125px;
+            height: 100px;
+            width: 100px;
         }
 
         h2 {
-            margin: 0 10%;
+            margin: 0 5%;
         }
     }
 `
@@ -69,6 +72,6 @@ const Container = styled.div`
         width: 100%;
 
         display: flex;
-        justify-content: flex-end;
+        justify-content: center;
     }
 `
