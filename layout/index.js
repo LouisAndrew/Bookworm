@@ -81,7 +81,7 @@ const Layout = props => {
 
     useEffect(() => {
 
-        if (!user && router.pathname !== '/login') {
+        if (!user.displayName && router.pathname !== '/login') {
             router.push('/login')
         }
     })
