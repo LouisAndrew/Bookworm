@@ -30,6 +30,8 @@ const Navi = () => {
         document.getElementById('nv').classList.toggle('active')
     }
 
+    console.log(isLogged)
+
     useEffect(() => {
 
         //if there's no user (indicated by the display name) => go to login page...
@@ -37,7 +39,7 @@ const Navi = () => {
             router.push('/login')
         } else {
 
-            if (!isLogged) {
+            if (!isLogged && user.displayName) {
                 setIsLogged(true)
             }
         }
@@ -53,7 +55,7 @@ const Navi = () => {
                     </Link>
                 </Item>
                 <Item>
-                    <Link href='/profile'>
+                    <Link href='/users'>
                         <a>Profile</a>
                     </Link>
                 </Item>

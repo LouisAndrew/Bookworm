@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
-import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 import { useUserData } from '../hooks/useFirestoreUser'
+import { UserContext } from '../helper/UserContext'
 
 const Rev = ({ uid , rev, bookName, dateCreated, bookId }) => {
 
@@ -15,12 +16,29 @@ const Rev = ({ uid , rev, bookName, dateCreated, bookId }) => {
       const user = useUserData(uid)
       const createdAt = dateCreated.toDate()
       const time = `${createdAt.getDate()}-${setMonth(createdAt.getMonth())}-${createdAt.getFullYear()}`
+      const router = useRouter()
+      const ctx = useContext(UserContext)
+
+      const clickBook = () => {
+
+            console.log('click!')
+            router.push('/books/[bid]', `/books/${bookId}`)
+      }
+
+      const clickUser = () => {
+            
+            if (uid === ctx.user.uid) {
+                  router.push('/users')
+            } else {
+                  router.push('/users/[uid]', `/users/${uid}`)
+            }
+      }
 
       return (
             <Container>
                   <img src={user.photoURL} />
                   <div>
-                        <h4><span>{user.displayName} </span> commented on <Link href={`/books/${bookId}`}><a><span>{bookName} </span></a></Link> </h4>
+                        <h4><span onClick={clickUser}>{user.displayName} </span> commented on <span onClick={clickBook}>{bookName} </span></h4>
                         <h6>{time} </h6>
                         <p>{rev} </p>
                   </div>
@@ -48,8 +66,15 @@ const Container = styled.div`
             padding: 0 5%;
             font-weight: normal;
 
-            h3 span {
-                  font-size: 1.5rem;
+            h4 span {
+                  transition: .2s;
+
+                  &:hover {
+
+                        background-color: #000;
+                        color: #fff;
+                        cursor: pointer;
+                  }
             }
 
             h6 {

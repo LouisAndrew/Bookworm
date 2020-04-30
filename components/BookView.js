@@ -140,8 +140,9 @@ const BookDetails = ({ reviews, info, bookId, bookName }) => {
 
       return (
             <>
-                  <Det>
-                        <h4>{info} </h4>
+                  <Det reviewAvailable={info}>
+                        <h4>Book Summary: </h4>
+                        <p>{info ? info : 'No Book Review is Available'} </p>
                   </Det>
                   <WriteRev onSubmit={submitReview}>
                         {/* <input ref={inputRef} onChange={change} placeholder='Post a review' type='textarea' /> */}
@@ -184,4 +185,8 @@ const Det = styled.div`
       border-radius: 15px;
       color: #000;
       ${({ theme }) => theme.shadow()};
+
+      p {
+            color: ${props => props.reviewAvailable ? '#000' : '#888'};
+      }
 `
