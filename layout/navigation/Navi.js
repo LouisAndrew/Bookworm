@@ -30,8 +30,6 @@ const Navi = () => {
         document.getElementById('nv').classList.toggle('active')
     }
 
-    console.log(isLogged)
-
     useEffect(() => {
 
         //if there's no user (indicated by the display name) => go to login page...

@@ -31,3 +31,12 @@ export const submitRev = (user, rev, bookId, bookName) => {
     dbRef.set(data)
         .catch(err => console.log(err))
 }
+
+export const setUserDisplayName = (newName, user) => {
+
+    const dbRef= db().collection('User').doc(user.uid)
+
+    return dbRef.update({
+        displayName: newName
+    })
+}

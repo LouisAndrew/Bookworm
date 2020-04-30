@@ -18,11 +18,14 @@ const Login = () => {
 
     const { user, addUser } = useContext(UserContext)
 
-    if (userData.displayName) {
+    console.log(userData)
 
+    if (userData.displayName) {
+        console.log('wtf')
         addUser(userData)
             .then(() => {
                 console.log('success adding user')
+                document.getElementById('head').innerText = `hello ${user.displayName}`
                 router.push('/')
             })
     }
@@ -42,7 +45,6 @@ const Login = () => {
         Cookie.set('user', JSON.stringify(user), { expires: defineExpiration() })
         //ambil yg atas wkt production!!
         // Cookie.set('user', JSON.stringify(user))
-        document.getElementById('head').innerText = `hello ${user.displayName}`
         setSavedUser(user)
     }
 
