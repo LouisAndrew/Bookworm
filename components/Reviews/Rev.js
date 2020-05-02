@@ -29,11 +29,9 @@ const Rev = ({ uid , rev, bookName, dateCreated, bookId, revId, fireCount }) => 
       const [ defaultFireClicked, setDefaultFireClicked ] = useState(ctx.provideIsFired(revId))
 
       defaultFireClicked && fireCount--
-      console.log(ctx)
 
       const clickBook = () => {
 
-            console.log('click!')
             router.push('/books/[bid]', `/books/${bookId}`)
       }
 
@@ -58,7 +56,7 @@ const Rev = ({ uid , rev, bookName, dateCreated, bookId, revId, fireCount }) => 
             //update firelist on context
             ctx.updateFireList(revId, isFireClicked)
                   //then update firelist on user inside firestore
-                  .then( () => updateFirelistFirestore(user, revId, isFireClicked) )
+                  .then( () => updateFirelistFirestore(ctx.user, revId, isFireClicked) )
       }
 
       const clickComment = () => {

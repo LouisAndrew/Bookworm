@@ -7,7 +7,8 @@ const useFirestoreUser = userFromCookie => {
     const [ user, setUser ] = useState({ })
 
     const getUserDbData = userFromCookie => {
-        
+
+        if ( !userFromCookie.uid ) return
         const dbRef = db().collection('User').doc(userFromCookie.uid)
 
         dbRef.get()

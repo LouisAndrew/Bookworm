@@ -7,7 +7,14 @@ import { faPen, faCheck } from '@fortawesome/free-solid-svg-icons'
 import { setUserDisplayName } from '../../helper'
 import useFireStoreUser from '../../hooks/useFirestoreUser'
 
+export const splitStringFromMessages = (string, message) => {
+    return string.split(message)[0]
+}
+
 const ProfileEditable = user => {
+
+    const SUCCESS_MESSAGE = 'Display name updated'
+    const ERR_MESSAGE = "Changes haven't been saved"
 
     const ref = useRef()
     const ctx = useContext(UserContext)
@@ -18,9 +25,12 @@ const ProfileEditable = user => {
 
     const edit = () => {
 
+        //remove tooltip => in case user is hovering!
         removeHover()
         document.getElementById('editable').classList.add('active')
+        //adding the borderborrom
         ref.current.contentEditable = true
+        //set element to be editable!
         setIsEditing(true)
         ref.current.focus()
     }
@@ -30,22 +40,23 @@ const ProfileEditable = user => {
         const editable = document.getElementById('editable')
         editable.classList.remove('active')
 
+        //remove red border
         if (editable.classList.contains('error')) {
             editable.classList.remove('error')
         }
 
-        if (onError) {
-
+        if ( onError ) {
+            //if before error is occured => delete error message
             setOnError(false)
-            const par = document.getElementById('err')
-            editable.removeChild(par)
         }
+
+        nameUpdated()
 
         ref.current.contentEditable = false
         setIsEditing(false)
 
-        const newName = ref.current.innerText
-
+        //here submit new name to fs
+        const newName = splitStringFromMessages( ref.current.innerText, SUCCESS_MESSAGE )
         if (newName !== displayName) {
 
             setDisplayName(ref.current.innerText)
@@ -62,14 +73,14 @@ const ProfileEditable = user => {
 
         const editable = document.getElementById('editable')
 
-        //if the user changed the name..
+        //if the user changed the name.. but hasn't saved the changes yet!
         if (isEditing && displayName !== ref.current.innerText) {
             editable.classList.add('error')
 
             if (!onError) {
 
                 setOnError(true)
-                createErrorElement(editable)
+                createErrorElement()
             }
 
         } else {
@@ -79,18 +90,53 @@ const ProfileEditable = user => {
         }
     }
 
-    const createErrorElement = span => {
+    const createErrorElement = () => {
 
-        //create h6 child
-        const par = document.createElement('h6')
-        //id => access to another function
-        par.id = 'err'
-        par.innerText = "Changes haven't been saved"
-        //uneditable so that user won't be able to modify error message
-        par.contentEditable = false
-        par.style.color = 'red'
+        let feedback = document.getElementById('feedback')
 
-        span.appendChild(par)
+        //if no element is available, create the element.
+        if ( !feedback ) {
+
+            feedback = document.createElement('h6')
+            feedback.id = 'feedback'
+            feedback.contentEditable = false
+
+            document.getElementById('editable-container').appendChild(feedback)
+        }
+
+        feedback.innerText = ERR_MESSAGE
+        feedback.style.color = 'red'
+    }
+
+    const nameUpdated = () => {
+
+        let feedback = document.getElementById('feedback')
+        const container = document.getElementById('editable-container')
+        const editable = document.getElementById('editable')
+
+        //if no element is available, create the element.
+        if ( container ) {
+
+            if ( !feedback ) {
+
+                feedback = document.createElement('h6')
+                feedback.id = 'feedback'
+                feedback.contentEditable = false
+    
+                container.appendChild(feedback)
+            }
+    
+            feedback.innerText = SUCCESS_MESSAGE
+            feedback.style.color = 'green'
+            editable.classList.add('success')
+    
+            setTimeout(() => {
+                
+                //after 30 seconds, remove the success message
+                container.lastChild.isEqualNode(feedback) && container.removeChild(feedback)
+                editable.classList.remove('success')
+            }, 3000)
+        }
     }
 
     const createHoverElement = text => {
@@ -123,21 +169,6 @@ const ProfileEditable = user => {
         }
     }
 
-    const nameUpdated = () => {
-
-        const par = document.createElement('h6')
-        par.innerHTML = 'Display name updated' + '<FontAwesomeIcon icon={faCheck} />'
-        par.contentEditable = false
-        par.style.color = 'green'
-
-        const editable = document.getElementById('editable')
-        editable.appendChild(par)
-
-        setTimeout(() => {
-            editable.removeChild(par)
-        }, 6000)
-    }
-
     return (
         <Editable id='editable-container'>
             <div id='buttons'>
@@ -146,7 +177,7 @@ const ProfileEditable = user => {
                     <FontAwesomeIcon id='edit' onMouseEnter={hoverEdit} onMouseLeave={removeHover} onClick={edit} className='icon' icon={faPen} />
                 }
             </div>
-            <span id='editable' onBlur={blur} ref={ref}>{!isEditing && 'Hello'} {displayName}</span>
+            <div id='editable' onBlur={blur} ref={ref}>{!isEditing && 'Hello'} {displayName} </div>
         </Editable>
     )
 }
@@ -159,9 +190,10 @@ const Editable = styled.h3`
     
     display: flex;
     flex-flow: row wrap;
+    flex-direction: column;
     align-items: flex-start;
 
-    span {
+    #editable {
         
         transition: .2s;
         font-size: 1.5rem;
@@ -177,6 +209,15 @@ const Editable = styled.h3`
         &.error {
 
             border-bottom: 2px solid red;
+        }
+
+        &.success {
+
+            border-bottom: 2px solid green;
+        }
+
+        #feedback {
+
         }
     }
 
