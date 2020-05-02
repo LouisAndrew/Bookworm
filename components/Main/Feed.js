@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import useNewestRev from '../../hooks/useNewestRev'
-import Rev from '../Rev'
+import Rev from '../Reviews/Rev'
 
 const Feed = () => {
 

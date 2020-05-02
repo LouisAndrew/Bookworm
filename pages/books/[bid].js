@@ -2,7 +2,7 @@ import React from 'react'
 import fetch from 'node-fetch'
 
 import Layout from '../../layout'
-import BookModel from '../../components/BookModel'
+import BookModel from '../../components/Book/BookModel'
 
 const BookPage = ({ data }) => {
     

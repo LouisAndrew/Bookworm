@@ -1,11 +1,11 @@
 import React, { useRef, useContext, useState } from 'react'
 import styled from 'styled-components'
 
-import { UserContext } from '../helper/UserContext'
+import { UserContext } from '../../helper/UserContext'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen, faCheck } from '@fortawesome/free-solid-svg-icons'
-import { setUserDisplayName } from '../helper'
-import useFireStoreUser from '../hooks/useFirestoreUser'
+import { setUserDisplayName } from '../../helper'
+import useFireStoreUser from '../../hooks/useFirestoreUser'
 
 const ProfileEditable = user => {
 
@@ -146,7 +146,7 @@ const ProfileEditable = user => {
                     <FontAwesomeIcon id='edit' onMouseEnter={hoverEdit} onMouseLeave={removeHover} onClick={edit} className='icon' icon={faPen} />
                 }
             </div>
-            <span on id='editable' onBlur={blur} ref={ref}>Hello, {displayName}</span>
+            <span id='editable' onBlur={blur} ref={ref}>{!isEditing && 'Hello'} {displayName}</span>
         </Editable>
     )
 }

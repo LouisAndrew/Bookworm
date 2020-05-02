@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 
 import Layout from '../../layout'
-import Profile from '../../components/Profile'
+import Profile from '../../components/Profile/Profile'
 import { UserContext } from '../../helper/UserContext'
 
 const ProfilePage = () => {

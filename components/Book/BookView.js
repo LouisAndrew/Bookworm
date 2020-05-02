@@ -1,12 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react'
 import styled from 'styled-components'
 
-import Book from './basics/Book'
-import { extract } from './search/Result'
-import Button from './basics/Button'
-import { UserContext } from '../helper/UserContext'
-import { submitRev } from '../helper'
-import RevContainer from './RevContainer'
+import Book from '../basics/Book'
+import { extract } from '../search/Result'
+import Button from '../basics/Button'
+import { UserContext } from '../../helper/UserContext'
+import { submitRev } from '../../helper'
+import RevContainer from '../Reviews/RevContainer'
 
 const BookView = ({ data }) => {
 

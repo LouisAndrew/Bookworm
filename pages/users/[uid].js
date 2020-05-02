@@ -2,7 +2,7 @@ import React from 'react'
 
 import Layout from '../../layout'
 import useFirestoreUser from '../../hooks/useFirestoreUser'
-import Profile from '../../components/Profile'
+import Profile from '../../components/Profile/Profile'
 
 const User = ({ uid }) => {
 
