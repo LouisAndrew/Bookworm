@@ -12,6 +12,7 @@ const UserContextProvider = props => {
     const addUser = user => {
 
         setUser(user)
+        //retrieving firelist from user => no need to fetch from fs every request.
         setFireList(user.fireList)
         return new Promise((res, rej) => {
             res('success')
@@ -39,7 +40,8 @@ const UserContextProvider = props => {
         }
 
         setFireList(temp)
-
+        
+        //always succeed
         return new Promise((res, rej) => {
             res('Success updating')
         })

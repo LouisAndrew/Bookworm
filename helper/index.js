@@ -36,12 +36,14 @@ export const createUniqueId = async (uuid) => {
 
 export const submitRev = async (user, rev, bookId, bookName) => {
 
+    //creating unique rev id=> no duplicate!
     let uniqueRevId = await createUniqueId()
     let dbRef = await db().collection('Reviews').doc(uniqueRevId)
 
     const date = new Date()
     const fireCount = 0
-
+    
+    //creating the data object template.
     const data = {
         fireCount,
         bookId,
@@ -54,7 +56,7 @@ export const submitRev = async (user, rev, bookId, bookName) => {
     
     dbRef.set(data)
         .catch(err => console.log(err))
-}
+}   
 
 export const setUserDisplayName = (newName, user) => {
 
@@ -67,7 +69,7 @@ export const setUserDisplayName = (newName, user) => {
 
 export const setRevOnFire = (revId, isFiring) => {
 
-    console.log(isFiring)
+    //updating firecount on review on firestore..
     const dbRefBook = db().collection('Reviews').doc(revId)
     const increment = db.FieldValue.increment(1)
     const decrement = db.FieldValue.increment(-1)
@@ -80,6 +82,7 @@ export const setRevOnFire = (revId, isFiring) => {
 
 export const updateFirelistFirestore = (user, revId, isFiring) => {
 
+    //updating firelist for user in firestore => UI integration
     const dbRefUser = db().collection('User').doc(user.uid)
 
     const add = db.FieldValue.arrayUnion(revId)
