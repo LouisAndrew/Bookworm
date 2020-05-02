@@ -42,7 +42,7 @@ const Login = () => {
     const logUserIn = user => {
 
         //do I still need cookie?
-        Cookie.set('user', JSON.stringify(user), { expires: defineExpiration() })
+        // Cookie.set('user', JSON.stringify(user), { expires: defineExpiration() })
         //ambil yg atas wkt production!!
         // Cookie.set('user', JSON.stringify(user))
         setSavedUser(user)
