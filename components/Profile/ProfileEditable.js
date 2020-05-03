@@ -26,7 +26,7 @@ const ProfileEditable = user => {
     const edit = () => {
 
         //remove tooltip => in case user is hovering!
-        removeHover()
+        // removeHover()
         document.getElementById('editable').classList.add('active')
         //adding the borderborrom
         ref.current.contentEditable = true
@@ -85,7 +85,7 @@ const ProfileEditable = user => {
 
         } else {
 
-            editable.classList.remove('error')
+            editable.classList.contains('error') && editable.classList.remove('error')
             setOnError(false)
         }
     }
@@ -93,19 +93,23 @@ const ProfileEditable = user => {
     const createErrorElement = () => {
 
         let feedback = document.getElementById('feedback')
+        const container = document.getElementById('editable-container')
 
-        //if no element is available, create the element.
-        if ( !feedback ) {
+        //guard clause.. usually there's a bug on firefox where node was not found..
+        if ( container ) {
+            //if no element is available, create the element.
+            if ( !feedback ) {
 
-            feedback = document.createElement('h6')
-            feedback.id = 'feedback'
-            feedback.contentEditable = false
+                feedback = document.createElement('h6')
+                feedback.id = 'feedback'
+                feedback.contentEditable = false
 
-            document.getElementById('editable-container').appendChild(feedback)
+                container.appendChild(feedback)
+            }
+
+            feedback.innerText = ERR_MESSAGE
+            feedback.style.color = 'red'
         }
-
-        feedback.innerText = ERR_MESSAGE
-        feedback.style.color = 'red'
     }
 
     const nameUpdated = () => {
@@ -118,14 +122,13 @@ const ProfileEditable = user => {
         if ( container ) {
 
             if ( !feedback ) {
-
                 feedback = document.createElement('h6')
                 feedback.id = 'feedback'
                 feedback.contentEditable = false
     
                 container.appendChild(feedback)
             }
-    
+            
             feedback.innerText = SUCCESS_MESSAGE
             feedback.style.color = 'green'
             editable.classList.add('success')

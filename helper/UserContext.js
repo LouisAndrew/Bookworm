@@ -8,6 +8,7 @@ const UserContextProvider = props => {
     
     const [ user, setUser ] = useState({ })
     const [ fireList, setFireList ] = useState([ ])
+    const [ themeLight, setThemeLight ] = useState(true)
 
     const addUser = user => {
 
@@ -47,10 +48,14 @@ const UserContextProvider = props => {
         })
     }
 
+    const changeTheme = () => {
+        setThemeLight(!themeLight)
+    }
+
     const provideIsFired = revId => fireList.indexOf(revId) > -1 ? true : false
 
     return (
-        <UserContext.Provider value={{ user, fireList ,addUser, removeUser, updateFireList, provideIsFired }}>
+        <UserContext.Provider value={{ user, fireList, themeLight, addUser, removeUser, updateFireList, provideIsFired, changeTheme }}>
             {props.children}
         </UserContext.Provider>
     )

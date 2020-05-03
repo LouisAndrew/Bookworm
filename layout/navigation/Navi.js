@@ -21,27 +21,7 @@ export const clickSearch = () => {
 const Navi = () => {
 
     //all based on user provided by user context
-    const router = useRouter()
-    const [ isLogged, setIsLogged ] = useState(false)
-    const { user } = useContext(UserContext)
-
-    const clickMenu = () => {
-
-        document.getElementById('nv').classList.toggle('active')
-    }
-
-    useEffect(() => {
-
-        //if there's no user (indicated by the display name) => go to login page...
-        if (!user.displayName && router.pathname !== '/login') {
-            router.push('/login')
-        } else {
-
-            if (!isLogged && user.displayName) {
-                setIsLogged(true)
-            }
-        }
-    })
+    
 
     return (
         <>
@@ -91,7 +71,7 @@ const Item = styled.li`
     }
 
     &:hover {
-        transform: translateY(-10px);
+        border-bottom: 1px solid #000;
         cursor: pointer;
     }
 
