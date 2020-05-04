@@ -119,6 +119,12 @@ const UserImg = styled.img`
     border-radius: 50%;
 
     margin: 3vh 1vh;
+
+    @media screen and ( max-width: 464px ) {
+        
+        height: 50px;
+        width: 50px;
+    }
 `
 
 const Items = styled.li`

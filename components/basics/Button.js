@@ -34,7 +34,7 @@ const Container = styled.button`
             default: 
                 return props.color
         }
-    }};
+    }} !important;
     border-radius: 10px;
     outline: none;
     border: ${props => props.border ? props.border : 'none' };

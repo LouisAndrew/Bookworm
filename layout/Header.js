@@ -57,5 +57,10 @@ const Container = styled.header`
 
             top: 10vh;
         }
+
+        @media screen and ( max-width: 464px ) {
+            
+            top: 3vh;
+        }
     }
 `

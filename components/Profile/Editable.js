@@ -1,5 +1,7 @@
 import React, { useState, useContext } from 'react'
 import styled from 'styled-components'
+import { Icon } from '@iconify/react'
+import roundClose from '@iconify/icons-ic/round-close'
 
 import Button from '../basics/Button'
 import { UserContext } from '../../helper/UserContext'
@@ -32,14 +34,20 @@ const Editable = props => {
         setNewName(e.target.value)
     }
 
+    const close = () => {
+
+        props.doneUpdating()
+    }
+
     return (
         <Container>
+            <Icon onClick={close} className='icon' icon={roundClose} color='white' />
             <Img src={props.photoURL} />
             <div className='inpt'>
                 <label for='name'>Display Name:</label>
                 <Name onChange={handleName} placeholder={props.displayName} name='name' id='name' />
             </div>
-            <Button onClick={changeDisplayName} text='Submit Change' bColor='pink' color='#fff' />
+            <Button onClick={changeDisplayName} text='Submit Change' bColor='pink' color='bg' />
         </Container>
     )
 }
@@ -53,6 +61,7 @@ const Name = styled.input.attrs(props => {
     
     background: none;
     background-color: ${({ theme }) => theme.bg};
+    color: ${({ theme }) => theme.font};
     
     padding: .5rem 1rem;
     border: none;
@@ -65,6 +74,12 @@ const Img = styled.img`
     height: 350px;
     width: 350px;
     border-radius: 50%;
+
+    @media screen and ( max-width: 464px ) {
+
+        height: 200px;
+        width: 200px;
+    }
 `
 
 const Container = styled.form`
@@ -74,6 +89,7 @@ const Container = styled.form`
     align-items: center;
 
     width: 30vw;
+    position: relative;
 
     padding: 5vh;
     background-color: rgba(0, 0, 0, .25);
@@ -86,6 +102,37 @@ const Container = styled.form`
         label {
 
             color: #fff;
+        }
+    }
+
+    .icon {
+
+        position: absolute;
+        top: 2vh;
+        right: 2vh;
+
+        height: 30px;
+        width: 30px;
+
+        &:hover {
+
+            cursor: pointer;
+        }
+    }
+
+    @media screen and ( orientation: portrait ) {
+
+        width: 60vw;
+    }
+
+    @media screen and ( max-width: 464px ) {
+        
+        width: 80vw;
+
+        .icon {
+
+            height: 30px;
+            width: 30px;
         }
     }
 `

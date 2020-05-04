@@ -69,7 +69,7 @@ const Layout = props => {
 
        #main {
 
-           margin-left: 8vh;
+           margin-left: 7vh;
            padding: 5vh 10vh;
 
            min-height: calc( 100vh - 2rem - 3vh );
@@ -87,6 +87,7 @@ const Layout = props => {
                h1, h2, h3, h4, h5, h6, a, p, button, span {
 
                    color: #000;
+                   transition: .2s;
                }
            }
 
@@ -97,13 +98,10 @@ const Layout = props => {
                 h1, h2, h3, h4, h5, h6, a, p, button, span {
 
                     color: #fff;
+                    transition: .2s;
                 }
             }
        }
-
-       ${'' /* .wrap {
-            padding: 0 15%;
-       } */}
 
        @media only screen and (max-width: 464px) {
             
@@ -111,9 +109,10 @@ const Layout = props => {
                 font-size: 12px;
             }
 
-            ${'' /* .wrap {
-                padding: 0 5%;
-            } */}
+            #main {
+
+                margin-left: 0;
+            }
                 
       }
     `

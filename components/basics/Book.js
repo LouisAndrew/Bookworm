@@ -13,7 +13,7 @@ const Book = ({ imgUrl, heading, subheading, link, id }) => {
     }
 
     return (
-        <Container onClick={click}>
+        <Container className='book-cont' onClick={click}>
             <Card imgUrl={imgUrl} heading={heading} subheading={subheading} />
         </Container>
     )
@@ -26,10 +26,13 @@ const Container = styled.div`
     width: 100%;
 
     cursor: pointer;
+    padding: 2vh;
+    margin: 2vh 0;
+    border-radius: 15px;
+    transition: .2s;
 
     .container {
         align-items: center;
-        margin: 5vh 0;
 
         .divider {
             margin-left: 10%;
@@ -42,5 +45,10 @@ const Container = styled.div`
                 max-width: 80%;
             }
         }
+    }
+
+    &:hover {
+
+        background-color: rgba(0, 0, 0, .25);
     }
 `

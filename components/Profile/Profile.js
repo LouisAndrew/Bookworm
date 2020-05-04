@@ -46,13 +46,13 @@ const Popup = styled.div`
 
     background-color: rgba(0, 0, 0, 0.25);
     position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
 /* 
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%); */
-
-    top: 0;
-    left: 0;
 
     display: flex;
     justify-content: center;
