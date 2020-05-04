@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 
 import useGoogleFont from '../hooks/useGoogleFont'
-import Navbar from './Navbar'
+import Header from './Header'
 import SearchBar from './SearchBar'
 import { UserContext } from '../helper/UserContext'
 import Nav from './Nav'
@@ -72,7 +72,7 @@ const Layout = props => {
            margin-left: 8vh;
            padding: 5vh 10vh;
 
-           min-height: 100vh;
+           min-height: calc( 100vh - 2rem - 3vh );
 
            &.login {
 
@@ -127,6 +127,7 @@ const Layout = props => {
                 {/* <Navbar /> */}
                 <SearchBar />
                 <Nav />
+                <Header />
                 <div className={themeLight ? 'light' : 'dark'} id='main'>
                     {props.children}
                 </div>
