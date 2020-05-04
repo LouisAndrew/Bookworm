@@ -112,6 +112,7 @@ const Layout = props => {
             #main {
 
                 margin-left: 0;
+                padding: 5vh;
             }
                 
       }

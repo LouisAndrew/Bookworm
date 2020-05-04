@@ -36,4 +36,9 @@ const FCon = styled.div`
 const Container = styled.div`
     width: 100%;
     padding-right: 10%;
+
+    @media screen and ( max-width: 840px ) {
+        
+        padding-right: 0;
+    }
 `
