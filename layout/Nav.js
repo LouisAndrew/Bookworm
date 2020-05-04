@@ -6,6 +6,7 @@ import homeFilled from '@iconify/icons-ant-design/home-filled'
 import bxsSearchAlt2 from '@iconify/icons-bx/bxs-search-alt-2'
 import bxListPlus from '@iconify/icons-bx/bx-list-plus'
 import booksIcon from '@iconify/icons-wpf/books'
+import Link from 'next/link'
 
 import { UserContext } from '../helper/UserContext'
 
@@ -13,12 +14,13 @@ const Nav = () => {
 
     const router = useRouter()
     const [ isLogged, setIsLogged ] = useState(false)
-    const { user } = useContext(UserContext)
+    const { user, themeLight } = useContext(UserContext)
+    const iconColor = themeLight ? 'black' : 'white' 
 
-    // const clickMenu = () => {
-
-    //     document.getElementById('nv').classList.toggle('active')
-    // }
+    const clickSearch = () => {
+    
+        document.getElementById('search-bar').classList.toggle('searching')
+    }
 
     useEffect(() => {
 
@@ -35,35 +37,72 @@ const Nav = () => {
 
         } else if (!isLogged && user.displayName) {
             setIsLogged(true)
+            chooseActive()
         }
     })
 
+    const goTo = e => {
+
+        //helper method => get href attr from element node, then pushing to the router!
+        const href = e.target.getAttribute('href')
+        if ( href !== router.pathname && href ) {
+
+            router.push(href, { shallow: true })
+        }
+    }
+
+    const chooseActive = () => {
+
+        const path = router.pathname.split('/')[1]
+
+        const items = Array.from( document.querySelectorAll('#nav li') )
+        items.forEach(li => {
+            
+            const hrefSplitted = li.getAttribute('href').split('/')[1]
+            if ( hrefSplitted === path ) {
+                li.firstChild.classList.add('active')
+                console.log(li.firstChild.classList)
+            } else {
+
+                li.firstChild.classList.remove('active')
+            }
+        })
+    }
+
     return (
-        <Contianer id='nav'>
+        <Contianer themeLight={themeLight} id='nav'>
             <Content>
-                <Items>
+                <Items href='/users' onClick={goTo}>
                     { user.displayName && 
                         <>
                             <UserImg src={user.photoURL} />
-                            <h3>{user.displayName}</h3>
+                            <Link href='/users'>
+                                <h3>{user.displayName}</h3> 
+                            </Link>
                         </>
                     }
                 </Items>
-                <Items>
-                    <Icon className='icons' icon={bxsSearchAlt2} />
+                <Items href='/search' onClick={clickSearch}>
+                    <Icon className='icons' icon={bxsSearchAlt2} color={iconColor} />
                     <h3>Search</h3>
                 </Items>
-                <Items>
-                    <Icon className='icons' icon={homeFilled} />
-                    <h3>Home</h3>
+                <Items href='/' onClick={goTo}>
+                    <Icon className='icons' icon={homeFilled} color={iconColor} />
+                    <Link href='/'>
+                        <a>Home</a>
+                    </Link>
                 </Items>
-                <Items>
-                    <Icon className='icons' icon={booksIcon} />
-                    <h3>Books</h3>
+                <Items href='/books' onClick={goTo}>
+                    <Icon className='icons' icon={booksIcon} color={iconColor} />
+                    <Link href='/books'>
+                        <a>Books</a>
+                    </Link>
                 </Items>
-                <Items>
-                    <Icon className='icons' icon={bxListPlus} />
-                    <h3>To-Read-List</h3>
+                <Items href='/' onClick={goTo}>
+                    <Icon className='icons' icon={bxListPlus} color={iconColor} />
+                    <Link href='/'>
+                        <a>To-Read</a>
+                    </Link>
                 </Items>
             </Content>
         </Contianer>    
@@ -97,6 +136,7 @@ const Items = styled.li`
         transition: .2s;
 
         border: 1px soild #000;
+        color: ${props => props.themeLight ? '#000' : '#fff'};
     }
 
     .icons {
@@ -104,13 +144,22 @@ const Items = styled.li`
         height: 30px;
         width: 30px;
 
-        border: 1px soild #000;
-
         margin: 3vh 1vh;
 
-        & + h3 {
+        & + a, & + h3 {
 
             transform: translateX(15px);
+            text-decoration: none;
+            color: ${props => props.themeLight ? '#000' : '#fff'};
+            max-width: 0;
+
+            font-size: 1.2rem;
+            font-weight: normal;
+        }
+
+        &.active {
+
+            border-bottom: 3px solid ${({ theme }) => theme.pink};
         }
     }
 
@@ -135,11 +184,23 @@ const Content = styled.ul`
         li {
 
 
-            h3 {
+            h3, a {
 
                 max-width: 30vw;
                 transform: translate(0);
                 margin: 0 1vh;
+            }
+        }
+    }
+
+    @media screen and ( max-width: 464px ) {
+
+        flex-direction: row;
+
+        li {
+
+            h3, a {
+                display: none;
             }
         }
     }
@@ -152,4 +213,11 @@ const Contianer = styled.nav`
 
     background-color: ${({ theme }) => theme.bg};
     box-shadow: ${({ theme }) => theme.shadow};
+
+    @media screen and ( max-width: 464px ) {
+        
+        height: auto;
+        width: 100%;
+        bottom: 0;
+    }
 `

@@ -69,14 +69,36 @@ const Layout = props => {
 
        #main {
 
-           margin-left: 10vh;
+           margin-left: 8vh;
            padding: 5vh 10vh;
+
+           min-height: 100vh;
 
            &.login {
 
                margin-left: 0;
                padding: 0;
            }
+
+           &.light {
+
+               background-color: #FFF;
+               
+               h1, h2, h3, h4, h5, h6, a, p, button, span {
+
+                   color: #000;
+               }
+           }
+
+           &.dark {
+
+                background-color: #292F36;
+
+                h1, h2, h3, h4, h5, h6, a, p, button, span {
+
+                    color: #fff;
+                }
+            }
        }
 
        ${'' /* .wrap {
@@ -102,10 +124,10 @@ const Layout = props => {
         <>
             <Global />
             <ThemeProvider theme={theme}>
-                {/* <Navbar />
-                <SearchBar /> */}
+                {/* <Navbar /> */}
+                <SearchBar />
                 <Nav />
-                <div id='main'>
+                <div className={themeLight ? 'light' : 'dark'} id='main'>
                     {props.children}
                 </div>
             </ThemeProvider>

@@ -16,6 +16,7 @@
     "@fortawesome/react-fontawesome": "^0.1.9",
     "@iconify/icons-ant-design": "^1.0.8",
     "@iconify/icons-bx": "^1.0.3",
+    "@iconify/icons-ic": "^1.0.11",
     "@iconify/icons-wpf": "^1.0.5",
     "@svgr/webpack": "^5.3.1",
     "firebase": "^7.14.1",

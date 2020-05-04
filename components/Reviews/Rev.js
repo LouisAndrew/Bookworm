@@ -27,6 +27,7 @@ const Rev = ({ uid , rev, bookName, dateCreated, bookId, revId, fireCount }) => 
       const [ fireClicked, setFireClicked ] = useState(ctx.provideIsFired(revId))
       const [ commentClicked, setCommentClicked ] = useState(false)
       const [ defaultFireClicked, setDefaultFireClicked ] = useState(ctx.provideIsFired(revId))
+      const pathUnclickedColor = ctx.themeLight ? 'black' : 'white'
 
       defaultFireClicked && fireCount--
 
@@ -73,11 +74,11 @@ const Rev = ({ uid , rev, bookName, dateCreated, bookId, revId, fireCount }) => 
                         <p>{rev} </p>
                         <div className='icons'>
                               <div className='icon-cont'>
-                                     <Icon onClick={clickComment} icon={bxsCommentDetail} className='icon' id={`comment-${revId}`} color={ commentClicked ? 'blue' : 'black' } />
+                                     <Icon onClick={clickComment} icon={bxsCommentDetail} className='icon' id={`comment-${revId}`} color={ commentClicked ? 'blue' : pathUnclickedColor } />
 
                               </div>
                               <div className='icon-cont'>
-                                    <Icon onClick={clickFire} icon={fireIcon} className='icon' id={`fire-${revId}`} color={ fireClicked ? 'red' : 'black' } />
+                                    <Icon onClick={clickFire} icon={fireIcon} className='icon' id={`fire-${revId}`} color={ fireClicked ? 'red' : pathUnclickedColor } />
                                     <p>{ fireClicked ? fireCount + 1 : fireCount }</p>
                               </div>
                         </div>
@@ -97,9 +98,11 @@ const Container = styled.div`
       padding: 5%;
       display: flex;
 
-      ${({ theme }) => theme.shadow()};
+      background-color: ${({ theme }) => theme.fg};
+      box-shadow: ${({ theme }) => theme.shadow};
+
       border-radius: 15px;
-      margin: 2vh 0;
+      margin: 4vh 0;
 
       img {
             height: 100px;
