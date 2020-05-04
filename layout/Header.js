@@ -12,7 +12,7 @@ const Header = () => {
 
     return (
         <Container>
-            <Icon onClick={changeTheme} className='icon' icon={ themeLight ? lightbulbCflOff : lightbulbCfl } />
+            <Icon id='lighter' onClick={changeTheme} className='icon' icon={ themeLight ? lightbulbCflOff : lightbulbCfl } />
             { user.displayName && <h2>BookWorm</h2> }
         </Container>
     )
@@ -42,6 +42,7 @@ const Container = styled.header`
         right: 5vh;
         top: 1vh;
 
+        transition: .2s;
         padding: 1vh;
         background-color: ${({ theme }) => theme.bg};
         box-shadow: ${({ theme }) => theme.shadow};
@@ -50,6 +51,11 @@ const Container = styled.header`
         &:hover {
 
             cursor: pointer;
+        }
+
+        &.searching {
+
+            top: 10vh;
         }
     }
 `

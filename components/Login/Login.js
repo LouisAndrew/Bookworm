@@ -16,7 +16,7 @@ const Login = () => {
 
     const userData = useFirestoreUser(savedUser)
 
-    const { user, addUser } = useContext(UserContext)
+    const { user, addUser, themeLight } = useContext(UserContext)
 
     console.log(userData)
 
@@ -64,7 +64,7 @@ const Login = () => {
         <Container>
             <LoginHeader className='login-head' />
             <h3 id='head'></h3>
-            <Button onClick={loginWithGoogle} color='#000' bColor='#fff' border='3px solid #000' text='Login With Google' />
+            <Button onClick={loginWithGoogle} color='font' bColor='bg' border={`3px solid ${themeLight ? '#000' : '#fff' }`} text='Login With Google' />
         </Container>
     )
 }

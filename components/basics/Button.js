@@ -19,10 +19,6 @@ const Container = styled.button`
                 return props.theme.pink
             case 'bg':
                 return props.theme.bg
-            case 'gray':
-                return props.theme.gray
-            case 'dark':
-                return props.theme.dark
             default: 
                 return props.bColor
         }
@@ -33,17 +29,15 @@ const Container = styled.button`
                 return props.theme.pink
             case 'bg':
                 return props.theme.bg
-            case 'gray':
-                return props.theme.gray
-            case 'dark':
-                return props.theme.dark
+            case 'font':
+                return props.theme.font
             default: 
                 return props.color
         }
     }};
     border-radius: 10px;
     outline: none;
-    border: ${props => props.border};;
+    border: ${props => props.border ? props.border : 'none' };
     font-weight: bold;
     /* box-shadow: 1px 1px rgba(21, 21, 21, 0.6); */
 

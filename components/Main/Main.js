@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import Feed from './Feed'
 import ProfileFeed from './ProfileFeed'
 import { UserContext } from '../../helper/UserContext'
+import Recommendation from './Recommendation'
 
 const Main = () => {
 
@@ -14,7 +15,8 @@ const Main = () => {
             <Content>
                 {user && <>
                             <Feed className='flex-item' />
-                            <ProfileFeed user={user} className='flex-item' />
+                            {/* <ProfileFeed user={user} className='flex-item' /> */}
+                            <Recommendation />
                          </>}
             </Content>
         </Container>
@@ -25,7 +27,7 @@ export default Main
 
 const Content = styled.section`
     display: flex;
-    margin-top: 10vh;
+    margin-top: 5vh;
     width: 100%;
 
     .flex-item {

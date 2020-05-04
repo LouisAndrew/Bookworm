@@ -20,6 +20,7 @@ const Nav = () => {
     const clickSearch = () => {
     
         document.getElementById('search-bar').classList.toggle('searching')
+        document.getElementById('lighter').classList.toggle('searching')
     }
 
     useEffect(() => {
@@ -136,7 +137,7 @@ const Items = styled.li`
         transition: .2s;
 
         border: 1px soild #000;
-        color: ${props => props.themeLight ? '#000' : '#fff'};
+        color: ${({ theme }) => theme.font};
     }
 
     .icons {
@@ -150,7 +151,7 @@ const Items = styled.li`
 
             transform: translateX(15px);
             text-decoration: none;
-            color: ${props => props.themeLight ? '#000' : '#fff'};
+            color: ${({ theme }) => theme.font};
             max-width: 0;
 
             font-size: 1.2rem;
