@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import styled from 'styled-components'
 
 import Feed from './Feed'
@@ -9,14 +9,29 @@ import Recommendation from './Recommendation'
 const Main = () => {
 
     const { user } = useContext(UserContext)
+    const [ hotReload, setHotReload ] = useState(false)
+
+    const rerender = () => {
+
+        setHotReload(true)
+    }
+
+    useEffect(() => {
+
+        setTimeout(() => {
+            hotReload && setHotReload(false)
+        }, 200)
+    }, [ hotReload ])
+
+    console.log('rendering')
 
     return (
         <Container className='wrap'>
             <Content>
                 {user && <>
-                            <Feed className='flex-item' />
+                            { !hotReload ? <Feed className='flex-item' /> : <h1>loading</h1> }
                             {/* <ProfileFeed user={user} className='flex-item' /> */}
-                            <Recommendation />
+                            <Recommendation className='flex-item' rerender={rerender} />
                          </>}
             </Content>
         </Container>

@@ -8,11 +8,13 @@ const Feed = () => {
 
     const revs = useNewestRev()
 
+    console.log('rendering feed')
+
     return (
         <Container>
             <h1>Feed</h1>
             {
-                revs[0] && <FeedContainer revs={revs} />
+                ( revs[0]) && <FeedContainer revs={revs} />
             }
         </Container>
     )

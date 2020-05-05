@@ -124,7 +124,6 @@ const Layout = props => {
         <>
             <Global />
             <ThemeProvider theme={theme}>
-                {/* <Navbar /> */}
                 <SearchBar />
                 <Nav />
                 <Header />

@@ -27,6 +27,7 @@ const useNewestRev = () => {
     useEffect(() => {
 
         if (!loaded) {
+            console.log('use newest')
             setLoaded(true)
             fetch()
         }

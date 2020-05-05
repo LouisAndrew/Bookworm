@@ -1,19 +1,23 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect, useContext } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { Icon } from '@iconify/react'
 import bxsSearchAlt2 from '@iconify/icons-bx/bxs-search-alt-2'
+import roundClose from '@iconify/icons-ic/round-close'
 
 import Button from './Button'
-import { fetchVolumeData, setQueryToUppercase } from '../../helper'
+import { fetchVolumeData, setQueryToUppercase, submitRev } from '../../helper'
 import Book from './Book'
 import { extract } from '../search/Result'
+import { UserContext } from '../../helper/UserContext'
 
-const Postable = () => {
+const Postable = ({ rerender }) => {
 
     const searchRef = useRef()
+    const textRef = useRef()
     const [ book, setBook ] = useState({ })
     // const [ bookName, setBookName ] = useState('')
     const [ bookList, setBookList ] = useState([ ])
+    const ctx = useContext(UserContext)
 
     // const fetchDataNeeded = async bookName => {
 
@@ -21,6 +25,13 @@ const Postable = () => {
     //     const rq = await fetchVolumeData(bookName, 'relevance', 0, 10)
     //     return rq
     // }
+
+    const resizeTextArea = e => {
+
+        const el = e.target
+        el.style.height = '10px'
+        e.target.style.height = `${e.target.scrollHeight}px`
+   }
 
     const searchBook = async e => {
 
@@ -37,6 +48,32 @@ const Postable = () => {
         setBookList([ ])
     }
 
+    const removeFocus = () => {
+
+        setBook({ })
+    }
+
+    const post = () => {
+
+        const user = ctx.user
+        const rev = textRef.current.value
+        const bookId = book.id
+        const title = book.volumeInfo.title
+
+        submitRev(user, rev, bookId, title)
+
+        setBook({ })
+        textRef.current.value = ''
+        rerender()
+    }
+
+    const clickPost = () => {
+
+        if ( book.volumeInfo ) {
+            post()
+        }
+    }
+
     const form = <>
                     <Icon className='icon' icon={bxsSearchAlt2} />
                     <form onSubmit={searchBook}>
@@ -45,21 +82,22 @@ const Postable = () => {
                  </>
 
     const bookFocuse = book.volumeInfo &&  <FocusBook>
-                                        <img src={item.volumeInfo.imageLinks && item.volumeInfo.imageLinks.thumbnail} />
+                                        <img src={book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail} />
                                         <div className='divider'>
-                                            <h5>{item.volumeInfo.title ? item.volumeInfo.title: undefinedItem} </h5>
-                                            <h6>{item.volumeInfo.authors ? item.volumeInfo.authors[0] : 'undefined'}</h6>
+                                            <h5>{book.volumeInfo.title ? book.volumeInfo.title: undefinedItem} </h5>
+                                            <h6>{book.volumeInfo.authors ? book.volumeInfo.authors[0] : 'undefined'}</h6>
                                         </div>
+                                        <Icon onClick={removeFocus} className='icon' icon={roundClose} />
                                       </FocusBook>
 
     console.log(book)
 
     return (
         <Container>
-            <Textarea />
+            <Textarea onChange={resizeTextArea} ref={textRef} />
             <div className='upper'>
                 { !book.volumeInfo ? form : bookFocuse}
-                <Button text='Post a review!' color='white' bColor='pink' />
+                <Button onClick={clickPost} text='Post a review!' color='white' bColor='pink' />
             </div>
             { bookList && <BookResultQuick focusOnBook={focusOnBook} bookList={bookList} /> }
         </Container>
@@ -100,6 +138,35 @@ export default Postable
 
 const FocusBook = styled.div`
 
+    display: flex;
+    align-items: center;
+    padding: 5%;
+    border-radius: 15px;
+
+    position: relative;
+    width: 60%;
+
+    background-color: ${({ theme }) => theme.fg};
+    box-shadow: ${({ theme }) => theme.shadow};
+
+    img {
+        height: 50px;
+    }
+
+    div {
+
+        width: 80%;
+        margin: 0 5%;
+        line-height: 1.2rem;
+    }
+
+    .icon {
+
+        height: 25px;
+        width: 25px;
+        position: absolute;
+        right: 5%;
+    }
 `
 
 const BookContainer = styled.div`
@@ -113,12 +180,16 @@ const BookContainer = styled.div`
 
     .book-cont {
 
-        height: 100px;
         margin: 1vh 0 !important;
+
+        img {
+
+            height: 60px !important;
+        }
 
         .divider {
 
-            line-height: normal;
+            line-height: normal !important;
 
             h2 {
                 font-size: 1rem !important;
@@ -162,7 +233,7 @@ const Mention = styled.input.attrs(props => ({
 const Textarea = styled.textarea`
 
     width: 100%;
-    height: 15vh;
+    min-height: 15vh;
 
     border: none;
     outline: none;
