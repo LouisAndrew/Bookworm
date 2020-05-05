@@ -9,6 +9,7 @@ import Button from '../basics/Button'
 import { UserContext } from '../../helper/UserContext'
 import { submitRev } from '../../helper'
 import RevContainer from '../Reviews/RevContainer'
+import Postable from '../basics/Postable'
 
 const BookView = ({ data }) => {
 
@@ -28,11 +29,11 @@ const BookView = ({ data }) => {
                   <Content className='wrap'>
 
                         <Item className='left'>
-                              <BookDetails openSummary={openSummary} bookName={bookName} bookId={data.id} info={data.volumeInfo.subtitle} />
+                              <BookDetails specificBook={data} openSummary={openSummary} bookName={bookName} bookId={data.id} info={data.volumeInfo.subtitle} />
                         </Item>
                         <Item className='right'>
                               <Icon onClick={expand} id='expand' className='icon' icon={caretLeftOutlined} color={themeLight ? 'black' : 'white' } />
-                              <Book {...volumeInfo}  />
+                              <Book click={() => {}} {...volumeInfo}  />
                         </Item>
 
                   </Content>
@@ -51,10 +52,12 @@ const Item = styled.div`
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 0 5%;
 
             position: relative;
 
             .container {
+
                   flex-direction: column;
                   align-items: center;
 
@@ -135,10 +138,9 @@ const Container = styled.div`
 `
 
 
-const BookDetails = ({ reviews, info, bookId, bookName, openSummary }) => {
+const BookDetails = ({ reviews, info, bookId, bookName, openSummary, specificBook }) => {
 
       const ctx = useContext(UserContext)
-      console.log(ctx, 'context')
       const [ rev, setRev ] = useState()
       const [ hotReload, setHotReload ] = useState(false)
       const inputRef = React.createRef()
@@ -184,6 +186,10 @@ const BookDetails = ({ reviews, info, bookId, bookName, openSummary }) => {
             inputRef.current.value = ''
       }
 
+      const rerender = () => {
+            setHotReload(true)
+      }
+
       useEffect(() => {
 
             if (hotReload) {
@@ -204,15 +210,17 @@ const BookDetails = ({ reviews, info, bookId, bookName, openSummary }) => {
                         </div>
                   </Det>
                   {/* { !openSummary && <h4>Click to open book summary</h4> } */}
-                  <WriteRev onSubmit={submitReview}>
+                  {/* <WriteRev onSubmit={submitReview}>
                         {/* <input ref={inputRef} onChange={change} placeholder='Post a review' type='textarea' /> */}
-                        <textarea placeholder='Post a review' ref={inputRef} onChange={change}>
+                        {/* <textarea placeholder='Post a review' ref={inputRef} onChange={change}>
 
                         </textarea>
                         <div>
                               <Button onClick={submitReview} color='#fff' bColor='#000' border='3px solid #000' text='Submit' />
                         </div>
-                  </WriteRev>
+                  </WriteRev> */} 
+                  <Postable specificBook={specificBook} rerender={rerender} />
+
                   { !hotReload && <RevContainer bookName={bookName} bookId={bookId} /> }
             </>
       )

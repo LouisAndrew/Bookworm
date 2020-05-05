@@ -69,8 +69,8 @@ const Layout = props => {
 
        #main {
 
-           margin-left: 7vh;
-           padding: 5vh 10vh;
+           margin-left: 12vh;
+           padding: 5vh 10vw;
 
            min-height: calc( 100vh - 2rem - 3vh );
 
@@ -103,18 +103,25 @@ const Layout = props => {
             }
        }
 
+       @media screen and ( max-width: 840px ) {
+           
+            #main {
+
+                margin-left: 0;
+                padding: 5vh 20%;
+            }
+       }
+
        @media only screen and (max-width: 464px) {
             
             :root {
                 font-size: 12px;
             }
-
+            
             #main {
 
-                margin-left: 0;
                 padding: 5vh;
             }
-                
       }
     `
 

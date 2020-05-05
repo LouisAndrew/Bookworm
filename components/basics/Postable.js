@@ -10,21 +10,13 @@ import Book from './Book'
 import { extract } from '../search/Result'
 import { UserContext } from '../../helper/UserContext'
 
-const Postable = ({ rerender }) => {
+const Postable = ({ rerender, specificBook }) => {
 
     const searchRef = useRef()
     const textRef = useRef()
     const [ book, setBook ] = useState({ })
-    // const [ bookName, setBookName ] = useState('')
     const [ bookList, setBookList ] = useState([ ])
     const ctx = useContext(UserContext)
-
-    // const fetchDataNeeded = async bookName => {
-
-    //     console.log(bookName)
-    //     const rq = await fetchVolumeData(bookName, 'relevance', 0, 10)
-    //     return rq
-    // }
 
     const resizeTextArea = e => {
 
@@ -82,19 +74,25 @@ const Postable = ({ rerender }) => {
                  </>
 
     const bookFocuse = book.volumeInfo &&  <FocusBook>
-                                        <img src={book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail} />
-                                        <div className='divider'>
-                                            <h5>{book.volumeInfo.title ? book.volumeInfo.title: undefinedItem} </h5>
-                                            <h6>{book.volumeInfo.authors ? book.volumeInfo.authors[0] : 'undefined'}</h6>
-                                        </div>
-                                        <Icon onClick={removeFocus} className='icon' icon={roundClose} />
-                                      </FocusBook>
+                                                <img src={book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail} />
+                                                <div className='divider'>
+                                                    <h5>{book.volumeInfo.title ? book.volumeInfo.title: undefinedItem} </h5>
+                                                    <h6>{book.volumeInfo.authors ? book.volumeInfo.authors[0] : 'undefined'}</h6>
+                                                </div>
+                                                { !specificBook && <Icon onClick={removeFocus} className='icon' icon={roundClose} /> }
+                                           </FocusBook>
 
-    console.log(book)
+    useEffect(() => {
+
+        if ( specificBook && !book.volumeInfo ) {
+
+            setBook(specificBook)
+        }
+    })
 
     return (
         <Container>
-            <Textarea onChange={resizeTextArea} ref={textRef} />
+            <Textarea placeholder={ specificBook ? `Write a comment for ${specificBook.volumeInfo.title} here` : 'Write a review here!' } onChange={resizeTextArea} ref={textRef} />
             <div className='upper'>
                 { !book.volumeInfo ? form : bookFocuse}
                 <Button onClick={clickPost} text='Post a review!' color='white' bColor='pink' />
@@ -257,6 +255,7 @@ const Container = styled.div`
 
         width: 100%;
         display: flex;
+        flex-flow: row wrap;
         justify-content: space-between;
         align-items: center;
 
@@ -277,6 +276,23 @@ const Container = styled.div`
             height: 20px;
             width: 20px;
             position: absolute;
+        }
+
+        @media screen and ( max-width: 1140px ) {
+                
+            .button {
+                width: 100%;
+                margin-top: 5%;
+            }
+
+            form {
+                width: 100%;
+            }
+
+            .icon {
+                top: 25%;
+                transform: translateY(-50%) !important;
+            }
         }
     }
 ` 

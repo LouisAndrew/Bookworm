@@ -119,11 +119,14 @@ const UserImg = styled.img`
     border-radius: 50%;
 
     margin: 3vh 1vh;
+    margin-left: 2vh;
 
     @media screen and ( max-width: 464px ) {
         
         height: 50px;
         width: 50px;
+
+        margin: 1vh 2vh;
     }
 `
 
@@ -139,11 +142,13 @@ const Items = styled.li`
 
     h3 {
 
-        max-width: 0;
+        /* max-width: 0; */
         transition: .2s;
 
         border: 1px soild #000;
         color: ${({ theme }) => theme.font};
+        margin: 0 1vh;
+        margin-right: 2vh;
     }
 
     .icons {
@@ -152,13 +157,18 @@ const Items = styled.li`
         width: 30px;
 
         margin: 3vh 1vh;
+        margin-left: 2vh;
 
         & + a, & + h3 {
 
-            transform: translateX(15px);
+            /* transform: translateX(15px); */
+            transform: translate(0);
+
+            margin: 0 1vh;
+            margin-right: 2vh;
             text-decoration: none;
             color: ${({ theme }) => theme.font};
-            max-width: 0;
+            /* max-width: 0; */
 
             font-size: 1.2rem;
             font-weight: normal;
@@ -167,6 +177,11 @@ const Items = styled.li`
         &.active {
 
             border-bottom: 3px solid ${({ theme }) => theme.pink};
+        }
+
+        @media screen and ( max-width: 840px ) {
+            
+            margin: 1vh 2vh;
         }
     }
 
@@ -195,12 +210,12 @@ const Content = styled.ul`
 
                 max-width: 30vw;
                 transform: translate(0);
-                margin: 0 1vh;
+                /* margin: 0 1vh; */
             }
         }
     }
 
-    @media screen and ( max-width: 464px ) {
+    @media screen and ( max-width: 840px ) {
 
         flex-direction: row;
 
@@ -221,7 +236,7 @@ const Contianer = styled.nav`
     background-color: ${({ theme }) => theme.bg};
     box-shadow: ${({ theme }) => theme.shadow};
 
-    @media screen and ( max-width: 464px ) {
+    @media screen and ( max-width: 840px ) {
         
         height: auto;
         width: 100%;
