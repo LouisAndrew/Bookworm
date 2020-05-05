@@ -1,19 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useRouter } from 'next/router'
 
 import Card from './Card'
 
-const Book = ({ imgUrl, heading, subheading, link, id }) => {
+const Book = ({ imgUrl, heading, subheading, link, id, click }) => {
 
-    const router = useRouter()
-
-    const click = () => {
-        router.push('/books/[bid]', `/books/${id}`)
+    const onClick = () => {
+        
+        click(id)
     }
 
     return (
-        <Container className='book-cont' onClick={click}>
+        <Container className='book-cont' onClick={onClick}>
             <Card imgUrl={imgUrl} heading={heading} subheading={subheading} />
         </Container>
     )

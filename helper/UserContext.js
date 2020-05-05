@@ -8,7 +8,7 @@ const UserContextProvider = props => {
     
     const [ user, setUser ] = useState({ })
     const [ fireList, setFireList ] = useState([ ])
-    const [ themeLight, setThemeLight ] = useState(false)
+    const [ themeLight, setThemeLight ] = useState(true)
 
     const addUser = user => {
 

@@ -30,6 +30,8 @@ const Content = styled.section`
     margin-top: 5vh;
     width: 100%;
 
+    padding: 0 8%;
+
     .flex-item {
         width: 100%;    
     }

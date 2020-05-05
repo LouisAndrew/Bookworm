@@ -27,6 +27,7 @@ const SearchBar = () => {
     const minimizeSearchBar = () => {
 
         document.getElementById('search-bar').classList.toggle('searching')
+        document.getElementById('lighter').classList.toggle('searching')
     }
 
     return (

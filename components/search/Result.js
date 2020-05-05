@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useRouter } from 'next/router'
 
 import Book from '../basics/Book'
 
@@ -19,13 +20,19 @@ export const extract = item => {
 
 const Result = ({ items, query }) => {
 
+    const router = useRouter()
+
+    const goToBook = id => {
+
+        router.push('/books/[bid]', `/books/${id}`)
+    }
 
     return (
         <Container>
             <Content className='wrap'>
                 <h4>Showing search results of: {query}  </h4>
                 {
-                    items.map(item => <Book {...extract(item)} />)
+                    items.map(item => <Book click={goToBook} {...extract(item)} />)
                 }
             </Content>
         </Container>

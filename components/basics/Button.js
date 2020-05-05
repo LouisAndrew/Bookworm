@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 const Button = props => {
     return (
-        <Container {...props}>
+        <Container className='button' {...props}>
             {props.text}
         </Container>
     )
