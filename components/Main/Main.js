@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from 'react'
 import styled from 'styled-components'
 
 import Feed from './Feed'
-import ProfileFeed from './ProfileFeed'
 import { UserContext } from '../../helper/UserContext'
 import Recommendation from './Recommendation'
 
@@ -30,7 +29,6 @@ const Main = () => {
             <Content>
                 {user && <>
                             { !hotReload ? <Feed className='flex-item' /> : <h1>loading</h1> }
-                            {/* <ProfileFeed user={user} className='flex-item' /> */}
                             <Recommendation className='flex-item' rerender={rerender} />
                          </>}
             </Content>

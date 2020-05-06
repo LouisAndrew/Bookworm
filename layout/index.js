@@ -69,14 +69,12 @@ const Layout = props => {
 
        #main {
 
-           margin-left: 6vh;
-           padding: 5vh 10vw;
+           padding: 5vh 15vw;
 
            min-height: calc( 100vh - 2rem - 3vh );
 
            &.login {
 
-               margin-left: 0;
                padding: 0;
            }
 
@@ -107,8 +105,8 @@ const Layout = props => {
            
             #main {
 
-                margin-left: 0;
                 padding: 5vh 20%;
+                margin-bottom: 8vh;
             }
        }
 
@@ -131,7 +129,7 @@ const Layout = props => {
         <>
             <Global />
             <ThemeProvider theme={theme}>
-                <SearchBar />
+                {/* <SearchBar /> */}
                 <Nav />
                 <Header />
                 <div className={themeLight ? 'light' : 'dark'} id='main'>

@@ -52,6 +52,17 @@ const Nav = () => {
         }
     }
 
+    const goToIcon = e => {
+
+        //helper when user clicks on icon => get parent element then it's href attr
+        const parent = e.target.parentElement.parentElement
+        const href = parent && parent.getAttribute('href')
+        if ( href !== router.pathname && href ) {
+            console.log(href)
+            router.push(href, { shallow: true })
+        }
+    }
+
     const chooseActive = () => {
 
         const path = router.pathname.split('/')[1]
@@ -76,34 +87,21 @@ const Nav = () => {
                 <Items href='/users' onClick={goTo}>
                     { user.displayName && 
                         <>
-                            <UserImg src={user.photoURL} />
-                            {/* <Link href='/users'>
-                                <h3>{user.displayName}</h3> 
-                            </Link> */}
+                            <UserImg onClick={goToIcon} src={user.photoURL} />
                         </>
                     }
                 </Items>
                 <Items href='/search' onClick={clickSearch}>
-                    <Icon className='icons' icon={bxsSearchAlt2} color={iconColor} />
-                    {/* <h3>Search</h3> */}
+                    <Icon onClick={goToIcon} className='icons' icon={bxsSearchAlt2} color={iconColor} />
                 </Items>
                 <Items href='/' onClick={goTo}>
-                    <Icon className='icons' icon={homeFilled} color={iconColor} />
-                    {/* <Link href='/'>
-                        <a>Home</a>
-                    </Link> */}
+                    <Icon onClick={goToIcon} className='icons' icon={homeFilled} color={iconColor} />
                 </Items>
                 <Items href='/books' onClick={goTo}>
-                    <Icon className='icons' icon={booksIcon} color={iconColor} />
-                    {/* <Link href='/books'>
-                        <a>Books</a>
-                    </Link> */}
+                    <Icon onClick={goToIcon} className='icons' icon={booksIcon} color={iconColor} />
                 </Items>
                 <Items href='/' onClick={goTo}>
-                    <Icon className='icons' icon={bxListPlus} color={iconColor} />
-                    {/* <Link href='/'>
-                        <a>To-Read</a>
-                    </Link> */}
+                    <Icon onClick={goToIcon} className='icons' icon={bxListPlus} color={iconColor} />
                 </Items>
             </Content>
         </Contianer>    
@@ -138,17 +136,6 @@ const Items = styled.li`
 
     overflow: hidden;
     transition: .2s;
-    
-    h3 {
-
-        /* max-width: 0; */
-        transition: .2s;
-
-        border: 1px soild #000;
-        color: ${({ theme }) => theme.font};
-        margin: 0 1vh;
-        margin-right: 2vh;
-    }
 
     .icons {
 
@@ -156,21 +143,6 @@ const Items = styled.li`
 
         height: 30px;
         width: 30px;
-
-        & + a, & + h3 {
-
-            /* transform: translateX(15px); */
-            transform: translate(0);
-
-            margin: 0 1vh;
-            margin-right: 2vh;
-            text-decoration: none;
-            color: ${({ theme }) => theme.font};
-            /* max-width: 0; */
-
-            font-size: 1.2rem;
-            font-weight: normal;
-        }
 
         &.active {
 
@@ -190,17 +162,17 @@ const Items = styled.li`
 
     &.active {
 
-        /* background-color: ${({ theme }) => theme.bg}; */
         border-left: 3px solid ${({ theme }) => theme.bg};
-
-        /* .icons {
-
-            border-bottom: 3px solid ${({ theme }) => theme.pink};
-        } */
 
         .icons {
 
             path { fill: ${({ theme }) => theme.bg}; }
+        }
+
+        @media screen and ( max-width: 840px ) {
+            
+            border-bottom: 3px solid ${({ theme }) => theme.bg};
+            border-left: none;
         }
     }
 `
@@ -216,29 +188,11 @@ const Content = styled.ul`
     &:hover {
 
         cursor: pointer;
-
-        li {
-
-
-            h3, a {
-
-                max-width: 30vw;
-                transform: translate(0);
-                /* margin: 0 1vh; */
-            }
-        }
     }
 
     @media screen and ( max-width: 840px ) {
 
         flex-direction: row;
-
-        li {
-
-            h3, a {
-                display: none;
-            }
-        }
     }
 `
 

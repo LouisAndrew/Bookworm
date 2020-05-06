@@ -17,12 +17,13 @@ const BookView = ({ data }) => {
       const volumeInfo = data && extract(data)
       const bookName = data.volumeInfo.title
       const { themeLight } = useContext(UserContext)
+      const info = data.volumeInfo.subtitle
 
-      const expand = () => {
+      // const expand = () => {
 
-            document.getElementById('expand').classList.toggle('expanded')
-            setOpenSummary(!openSummary)
-      }
+      //       document.getElementById('expand').classList.toggle('expanded')
+      //       setOpenSummary(!openSummary)
+      // }
 
       return (
             <Container>
@@ -32,8 +33,14 @@ const BookView = ({ data }) => {
                               <BookDetails specificBook={data} openSummary={openSummary} bookName={bookName} bookId={data.id} info={data.volumeInfo.subtitle} />
                         </Item>
                         <Item className='right'>
-                              <Icon onClick={expand} id='expand' className='icon' icon={caretLeftOutlined} color={themeLight ? 'black' : 'white' } />
+                              {/* <Icon onClick={expand} id='expand' className='icon' icon={caretLeftOutlined} color={themeLight ? 'black' : 'white' } /> */}
                               <Book click={() => {}} {...volumeInfo}  />
+                              <Det reviewAvailable={info}>
+                                    <div>
+                                          <h4>Book Summary: </h4>
+                                          <p>{ info ? info : 'No Book Review is Available'} </p>
+                                    </div>
+                              </Det>
                         </Item>
 
                   </Content>
@@ -43,6 +50,27 @@ const BookView = ({ data }) => {
 
 export default BookView
 
+const Det = styled.div`
+      width: 100%;
+
+      border-radius: 15px;
+      /* max-height: ${props => props.openSummary ? '100vh' : '0'}; */
+
+      background-color: ${({ theme }) => theme.fg};
+      box-shadow: ${({ theme }) => theme.shadow};
+      transition: .2s;
+      overflow: hidden;
+
+      div {
+
+            padding: 5%;
+      }
+
+      p {   
+            color: ${props => props.reviewAvailable ? '#000' : '#888'};
+      }
+`
+
 const Item = styled.div`
       width: 100%;
 
@@ -51,31 +79,46 @@ const Item = styled.div`
 
             display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 0 5%;
+            justify-content: flex-start;
+            flex-direction: column;
+            padding: 0 10%;
 
             position: relative;
 
-            .container {
+            .book-cont {
 
-                  flex-direction: column;
-                  align-items: center;
+                  height: fit-content;
+                  margin-bottom: 0;
+                  padding-top: 0;
+                  margin-top: 0;
 
-                  img {
-                        width: 25%;
-                  }
+                  .container {
 
-                  .divider {
-                        text-align: center;
-                        /* override style rule from Book */
-                        margin: 5vh 0;
+                        flex-direction: column;
+                        align-items: center;
 
-                        @media screen and (max-width: 840px) {
-                              
-                              margin-bottom: 0;
+                        img {
+                              width: 50%;
+                        }
+
+                        .divider {
+                              text-align: center;
+                              /* override style rule from Book */
+                              margin: 5vh 0;
+
+                              @media screen and (max-width: 840px) {
+                                    
+                                    margin-bottom: 0;
+                              }
                         }
                   }
+
+            &:hover {
+
+                  background-color: ${({ theme }) => theme.bg};
+                  cursor: default;
             }
+      }
 
             .icon {
 
@@ -107,15 +150,6 @@ const Item = styled.div`
                         }
                   }
             }
-
-            .book-cont {
-
-                  &:hover {
-
-                        background-color: ${({ theme }) => theme.bg};
-                        cursor: default;
-                  }
-            }
       }
 `
 
@@ -141,49 +175,13 @@ const Container = styled.div`
 const BookDetails = ({ reviews, info, bookId, bookName, openSummary, specificBook }) => {
 
       const ctx = useContext(UserContext)
-      const [ rev, setRev ] = useState()
       const [ hotReload, setHotReload ] = useState(false)
-      const inputRef = React.createRef()
-
-      // const resizeTextArea = () => {
-
-      //       inputRef.style.height = '1px'
-      //       inputRef.style.height = `${25 + e.scrollHeight}px`
-      // }
 
       const resizeTextArea = e => {
 
             const el = e.target
             el.style.height = '10px'
             e.target.style.height = `${e.target.scrollHeight}px`
-      }
-
-      const change = e => {
-            setRev(e.target.value)
-            resizeTextArea(e)
-      }
-
-      // function adjustHeight(textareaElement, minHeight) {
-      //       // compute the height difference which is caused by border and outline
-      //       var outerHeight = parseInt(window.getComputedStyle(el).height, 10);
-      //       var diff = outerHeight - el.clientHeight;
-    
-      //       // set the height to 0 in case of it has to be shrinked
-      //       el.style.height = 0;
-    
-      //       // set the correct height
-      //       // el.scrollHeight is the full height of the content, not just the visible part
-      //       el.style.height = Math.max(minHeight, el.scrollHeight + diff) + 'px';
-      //   }
-
-      const submitReview = e => {
-            e.preventDefault()
-            submitRev(ctx.user, rev, bookId, bookName)
-            
-            //force the rev container to reload after submitting...
-            setHotReload(true)
-            setRev('')
-            inputRef.current.value = ''
       }
 
       const rerender = () => {
@@ -203,67 +201,10 @@ const BookDetails = ({ reviews, info, bookId, bookName, openSummary, specificBoo
 
       return (
             <>
-                  <Det openSummary={openSummary} reviewAvailable={info}>
-                        <div>
-                              <h4>Book Summary: </h4>
-                              <p>{info ? info : 'No Book Review is Available'} </p>
-                        </div>
-                  </Det>
                   {/* { !openSummary && <h4>Click to open book summary</h4> } */}
-                  {/* <WriteRev onSubmit={submitReview}>
-                        {/* <input ref={inputRef} onChange={change} placeholder='Post a review' type='textarea' /> */}
-                        {/* <textarea placeholder='Post a review' ref={inputRef} onChange={change}>
-
-                        </textarea>
-                        <div>
-                              <Button onClick={submitReview} color='#fff' bColor='#000' border='3px solid #000' text='Submit' />
-                        </div>
-                  </WriteRev> */} 
                   <Postable specificBook={specificBook} rerender={rerender} />
 
                   { !hotReload && <RevContainer bookName={bookName} bookId={bookId} /> }
             </>
       )
 }
-
-const WriteRev = styled.form`
-      width: 100%;
-      padding: 5% 10%;
-      ${({ theme }) => theme.center()};
-      justify-content: flex-start;
-
-      #input, textarea {
-            width: 100%;
-            min-height: 10px;
-
-            padding: 1vh 2vh;
-            border: none;
-            border-left: 2px solid #000;
-            outline: none;
-
-            resize: vertical;
-            overflow: hidden;
-      }
-`
-
-const Det = styled.div`
-      margin-top: 5vh;
-      width: 100%;
-
-      border-radius: 15px;
-      max-height: ${props => props.openSummary ? '100vh' : '0'};
-
-      background-color: ${({ theme }) => theme.fg};
-      box-shadow: ${({ theme }) => theme.shadow};
-      transition: .2s;
-      overflow: hidden;
-
-      div {
-
-            padding: 5%;
-      }
-
-      p {   
-            color: ${props => props.reviewAvailable ? '#000' : '#888'};
-      }
-`

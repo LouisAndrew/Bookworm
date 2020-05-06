@@ -231,11 +231,12 @@ const Mention = styled.input.attrs(props => ({
 const Textarea = styled.textarea`
 
     width: 100%;
-    min-height: 15vh;
-
     border: none;
     outline: none;
     padding: 1rem;
+
+    min-height: 15vh;
+    resize: none;
 
     background-color: ${({ theme }) => theme.fg};
     color: ${({ theme }) => theme.font};
