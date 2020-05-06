@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import ProfileEditable from './ProfileEditable'
 import Button from '../basics/Button'
 import Editable from './Editable'
 
@@ -86,5 +85,11 @@ const Container = styled.div`
             margin: 5vh 0;
             border-radius: 50%;
         }
+    }
+
+    @media screen and ( max-width: 840px ) {
+        
+        flex-direction: column;
+        align-items: center;
     }
 `

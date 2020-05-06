@@ -2,7 +2,7 @@ import Layout from '../../layout'
 
 const UsersBook = () => (
     <Layout>
-        <h3>Book Page</h3>
+        <h3>My To-Read-List</h3>
     </Layout>
 )
 

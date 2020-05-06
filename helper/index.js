@@ -14,7 +14,7 @@ export const fetchVolumeData = async(query, sortBy, startIndex, maxResult ) => {
     return rsp
 }
 
-export const createUniqueId = async (uuid) => {
+export const createUniqueRevId = async uuid => {
 
     const random = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
 
@@ -25,8 +25,6 @@ export const createUniqueId = async (uuid) => {
     
     while ( doc.exists ) {
 
-        console.log(uniqueRevId)
-
         uniqueRevId = random()
         doc = await dbRef.doc(uniqueRevId).get()
     }
@@ -34,17 +32,37 @@ export const createUniqueId = async (uuid) => {
     return await uniqueRevId
 }
 
+export const createUniqueCommentId = async uuid => {
+
+    const random = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+
+    let uniqueComId = uuid || random()
+    let dbRef = db().collection('Comments')
+
+    let doc = await dbRef.doc(uniqueComId).get()
+    
+    while ( doc.exists ) {
+
+        uniqueComId = random()
+        doc = await dbRef.doc(uniqueComId).get()
+    }
+
+    return await uniqueComId
+}
+
 export const submitRev = async (user, rev, bookId, bookName) => {
 
     //creating unique rev id=> no duplicate!
-    let uniqueRevId = await createUniqueId()
+    let uniqueRevId = await createUniqueRevId()
     let dbRef = await db().collection('Reviews').doc(uniqueRevId)
 
     const date = new Date()
     const fireCount = 0
+    const commentList = [ ]
     
     //creating the data object template.
     const data = {
+        commentList,
         fireCount,
         bookId,
         rev,
@@ -90,5 +108,44 @@ export const updateFirelistFirestore = (user, revId, isFiring) => {
 
     dbRefUser.update({
         fireList: isFiring ? add : remove
+    })
+}
+
+export const postComment = async (user, revId, rev, bookId, bookName) => {
+
+    const cId = await createUniqueCommentId()
+    const dbRef = db().collection('Comments').doc(cId)
+
+    const date = new Date()
+    const fireCount = 0
+
+    const data = {
+
+        fireCount,
+        revId,
+        rev,
+        bookId,
+        bookName,
+        cId,
+        dateCreated: date,
+        uid: user.uid,
+    }
+
+    console.log(data)
+
+    dbRef.set(data)
+        .then(() => { addCommentList(cId, revId) })
+        .catch(err => console.log(err))
+}
+
+export const addCommentList = async ( cId, revId ) => {
+
+    const dbRevRef = db().collection('Reviews').doc(revId)
+
+    console.log('adding')
+
+    const add = db.FieldValue.arrayUnion(cId)
+    dbRevRef.update({
+        commentList: add
     })
 }

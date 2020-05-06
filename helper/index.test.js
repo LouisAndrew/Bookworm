@@ -26,6 +26,6 @@ expect.extend({
 })
 
 test('Testing when uniqueId is already available in inside the firestore database', () => {
-    expect(createUniqueId('abcdefghjk'))
+    expect(createUniqueRevId('abcdefghjk'))
         .not.toBe('abcdefghjk')
 })

@@ -1,17 +1,28 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useRef, useCallback, useEffect } from 'react'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import { Icon, InlineIcon } from '@iconify/react'
 import sharpExpandLess from '@iconify/icons-ic/sharp-expand-less'
+import { useInView } from 'react-intersection-observer'
 
 import { UserContext } from '../helper/UserContext'
 
 const SearchBar = () => {
 
     const router = useRouter()
-    const ref = React.createRef()
+    const ref = useRef()
+    const [ inViewRef, inView ] = useInView({
+        threshold: 0
+    })
     const [ search, setSearch ] = useState('')
     const { lightTheme } = useContext(UserContext)
+
+    const setRefs = useCallback(
+        node => {
+            ref.current = node
+            inViewRef(node)
+        }
+    )
 
     const input = e => {
         setSearch(e.target.value)
@@ -24,15 +35,17 @@ const SearchBar = () => {
         // minimizeSearchBar()
     }
 
-    // const minimizeSearchBar = () => {
+    useEffect(() => {
 
-    //     document.getElementById('search-bar').classList.toggle('searching')
-    //     document.getElementById('lighter').classList.toggle('searching')
-    // }
+        if ( inView && window.location.hash === '#search' ) {
+
+            window.location.hash = ''
+        }
+    })
 
     return (
-        <Container lightTheme={lightTheme} onSubmit={searchFor} id='search-bar' className='wrap'>
-            <input onChange={input} ref={ref} type='text' placeholder='Search for books here..' />
+        <Container id='search' lightTheme={lightTheme} onSubmit={searchFor} className='wrap'>
+            <input onChange={input} ref={setRefs} type='text' placeholder='Search for books here..' />
             {/* <Icon onClick={minimizeSearchBar} className='icon' icon={sharpExpandLess} /> */}
         </Container>
     )

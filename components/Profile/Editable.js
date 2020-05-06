@@ -9,8 +9,6 @@ import { setUserDisplayName } from '../../helper'
 
 const Editable = props => {
 
-    console.log(props)
-
     const [ newName, setNewName ] = useState('')
     const { addUser, user } = useContext(UserContext)
 
@@ -20,6 +18,7 @@ const Editable = props => {
         setUserDisplayName(newName, user)
             .then(() => {
                 
+                //TODO error message!
                 console.log('done')
                 let updated = user
                 updated.displayName = newName
@@ -88,7 +87,6 @@ const Container = styled.form`
     flex-direction: column;
     align-items: center;
 
-    width: 30vw;
     position: relative;
 
     padding: 5vh;

@@ -10,6 +10,13 @@ import Book from './Book'
 import { extract } from '../search/Result'
 import { UserContext } from '../../helper/UserContext'
 
+export const resizeTextArea = e => {
+
+    const el = e.target
+    el.style.height = '10px'
+    e.target.style.height = `${e.target.scrollHeight}px`
+}
+
 const Postable = ({ rerender, specificBook }) => {
 
     const searchRef = useRef()
@@ -17,13 +24,6 @@ const Postable = ({ rerender, specificBook }) => {
     const [ book, setBook ] = useState({ })
     const [ bookList, setBookList ] = useState([ ])
     const ctx = useContext(UserContext)
-
-    const resizeTextArea = e => {
-
-        const el = e.target
-        el.style.height = '10px'
-        e.target.style.height = `${e.target.scrollHeight}px`
-   }
 
     const searchBook = async e => {
 
@@ -108,9 +108,7 @@ const BookResultQuick = ({ bookList, focusOnBook }) => {
 
     useEffect(() => {
 
-        setTimeout(() => {
-            document.getElementById('book-cont-main').classList.add('rendered')
-        }, 0)
+        document.getElementById('book-cont-main') && document.getElementById('book-cont-main').classList.add('rendered')
         
         return () => {
 

@@ -1,16 +1,19 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useRef } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { useRouter } from 'next/router'
-
-import { useUserData } from '../../hooks/useFirestoreUser'
-import { UserContext } from '../../helper/UserContext'
-import { setRevOnFire, updateFirelistFirestore } from '../../helper'
 import { Icon, InlineIcon } from '@iconify/react'
 import fireIcon from '@iconify/icons-fa-solid/fire'
 import bxsCommentDetail from '@iconify/icons-bx/bxs-comment-detail'
 
+import { useUserData } from '../../hooks/useFirestoreUser'
+import { UserContext } from '../../helper/UserContext'
+import { setRevOnFire, updateFirelistFirestore, postComment } from '../../helper'
+import { resizeTextArea } from '../basics/Postable'
+import Button from '../basics/Button'
+import RevComments from './RevComments'
 
-const Rev = ({ uid , rev, bookName, dateCreated, bookId, revId, fireCount }) => {
+
+const Rev = ({ uid , rev, bookName, dateCreated, bookId, revId, fireCount, commentList }) => {
 
       const setMonth = monthNum => {
 
@@ -18,11 +21,12 @@ const Rev = ({ uid , rev, bookName, dateCreated, bookId, revId, fireCount }) => 
             return months[monthNum]
       }
 
-      const user = useUserData(uid)
-      const createdAt = dateCreated.toDate()
-      const time = `${createdAt.getDate()}-${setMonth(createdAt.getMonth())}-${createdAt.getFullYear()}`
+      const user = uid && useUserData(uid)
+      const createdAt = dateCreated && dateCreated.toDate()
+      const time = createdAt && `${createdAt.getDate()}-${setMonth(createdAt.getMonth())}-${createdAt.getFullYear()}`
       const router = useRouter()
       const ctx = useContext(UserContext)
+      const commentRef = useRef()
 
       const [ fireClicked, setFireClicked ] = useState(ctx.provideIsFired(revId))
       const [ commentClicked, setCommentClicked ] = useState(false)
@@ -63,118 +67,175 @@ const Rev = ({ uid , rev, bookName, dateCreated, bookId, revId, fireCount }) => 
       const clickComment = () => {
 
             setCommentClicked(!commentClicked)
+            document.getElementById(`type-${revId}`).classList.toggle('on')
+      }
+
+      const submitComment = e => {
+
+            e.preventDefault()
+            const comment = commentRef.current.value
+            postComment(user, revId, comment, bookId, bookName)
       }
 
       return (
             <Container revId={revId}>
-                  <img src={user.photoURL} />
-                  <div className='right'>
-                        <h4><span onClick={clickUser}>{user.displayName} </span> commented on <span onClick={clickBook}>{bookName} </span></h4>
-                        <h6>{time} </h6>
-                        <p>{rev} </p>
-                        <div className='icons'>
-                              <div className='icon-cont'>
-                                     <Icon onClick={clickComment} icon={bxsCommentDetail} className='icon' id={`comment-${revId}`} color={ commentClicked ? 'blue' : pathUnclickedColor } />
+                  <div className='rv'>
+                        <img src={user.photoURL} />
+                        <div className='right'>
+                              <h4><span onClick={clickUser}>{user.displayName} </span> commented on <span onClick={clickBook}>{bookName} </span></h4>
+                              <h6>{time} </h6>
+                              <p>{rev} </p>
+                              <div className='icons'>
+                                    <div className='icon-cont'>
+                                          <Icon onClick={clickComment} icon={bxsCommentDetail} className='icon' id={`comment-${revId}`} color={ commentClicked ? 'blue' : pathUnclickedColor } />
 
-                              </div>
-                              <div className='icon-cont'>
-                                    <Icon onClick={clickFire} icon={fireIcon} className='icon' id={`fire-${revId}`} color={ fireClicked ? 'red' : pathUnclickedColor } />
-                                    <p>{ fireClicked ? fireCount + 1 : fireCount }</p>
+                                    </div>
+                                    <div className='icon-cont'>
+                                          <Icon onClick={clickFire} icon={fireIcon} className='icon' id={`fire-${revId}`} color={ fireClicked ? 'red' : pathUnclickedColor } />
+                                          <p>{ fireClicked ? fireCount + 1 : fireCount }</p>
+                                    </div>
                               </div>
                         </div>
                   </div>
+                  <CommentContainer>
+                        { 
+                              (commentList && commentList[0]) && commentList.map(cid => <RevComments cid={cid} />)
+                        }
+                  </CommentContainer>
+                  <CommentArea id={`type-${revId}`}>
+                        <Textarea ref={commentRef} placeholder='Write a comment' onChange={resizeTextArea} />
+                        <Button onClick={submitComment} color='#fff' text='submit' bColor='pink' />
+                  </CommentArea> 
             </Container>
       )
 }
 
 export default Rev
 
-const fireAnimation = keyframes`
+const CommentArea = styled.form`
+
+      width: 80%;
+      max-height: 0;
+
+      overflow: hidden;
+      transition: .4s;
+
+      display: flex;
+      margin: 1rem 0;
+
+      &.on {
+
+            max-height: 100vh;
+      }
+`
+
+const Textarea = styled.textarea`
+
+      width: 100%;
+      min-height: 3rem;
+
+      background-color: ${({ theme }) => theme.fg};
+      border: none;
+      outline: none;
+      border-bottom: 2px solid ${({ theme }) => theme.pink};
+
+      resize: none;
+`
+
+const CommentContainer = styled.div`
 
 `
 
 const Container = styled.div`
-
-      padding: 5%;
-      display: flex;
 
       background-color: ${({ theme }) => theme.fg};
       box-shadow: ${({ theme }) => theme.shadow};
 
       border-radius: 15px;
       margin: 4vh 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
 
-      img {
-            height: 100px;
-            width: 100px;
-            border-radius: 50%;
-      }
+      .rv {
 
-      .right {
-            
             width: 100%;
-            padding: 0 5%;
-            font-weight: normal;
+            padding: 5%;
+            display: flex;
 
-            h4 span {
-                  transition: .2s;
-
-                  &:hover {
-
-                        background-color: #000;
-                        color: #fff;
-                        cursor: pointer;
-                  }
+            img {
+                  height: 100px;
+                  width: 100px;
+                  border-radius: 50%;
             }
 
-            p {
-                  margin: 5% 0;
-            }
-
-            a {
-                  text-decoration: none;
-                  color: #000;
-                  transition: .2s;
-
-                  &:hover {
-
-                        font-weight: bold;
-                        text-decoration: underline;
-                  }
-            }
-
-            .icons {
-
-                  display: flex;
-                  justify-content: flex-end;
+            .right {
+                  
                   width: 100%;
+                  padding: 0 5%;
+                  font-weight: normal;
 
-                  .icon-cont {
+                  h4 span {
+                        transition: .2s;
+
+                        &:hover {
+
+                              background-color: #000;
+                              color: #fff;
+                              cursor: pointer;
+                        }
+                  }
+
+                  p {
+                        margin: 5% 0;
+                  }
+
+                  a {
+                        text-decoration: none;
+                        color: #000;
+                        transition: .2s;
+
+                        &:hover {
+
+                              font-weight: bold;
+                              text-decoration: underline;
+                        }
+                  }
+
+                  .icons {
 
                         display: flex;
-                        align-items: center;
+                        justify-content: flex-end;
+                        width: 100%;
 
-                        .icon {
-                              
-                              path {
-                                          transition: .2s;
-                                    }
+                        .icon-cont {
 
-                              &:hover {
-                                    cursor: pointer;
+                              display: flex;
+                              align-items: center;
 
+                              .icon {
+                                    
                                     path {
+                                                transition: .2s;
+                                          }
+
+                                    &:hover {
                                           cursor: pointer;
-                                         transform: tr;
+
+                                          path {
+                                                cursor: pointer;
+                                          transform: tr;
+                                          }
                                     }
-                              }
 
-                              &.checked {
+                                    &.checked {
 
-                              }
-                        }     
+                                    }
+                              }     
+                        }
+
                   }
-
             }
       }
 

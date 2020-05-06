@@ -6,6 +6,7 @@ import homeFilled from '@iconify/icons-ant-design/home-filled'
 import bxsSearchAlt2 from '@iconify/icons-bx/bxs-search-alt-2'
 import bxListPlus from '@iconify/icons-bx/bx-list-plus'
 import booksIcon from '@iconify/icons-wpf/books'
+import userEdit from '@iconify/icons-fa-solid/user-edit'
 import Link from 'next/link'
 
 import { UserContext } from '../helper/UserContext'
@@ -17,26 +18,20 @@ const Nav = () => {
     const { user, themeLight } = useContext(UserContext)
     const iconColor = themeLight ? 'black' : 'white' 
 
-    const clickSearch = () => {
-    
-        document.getElementById('search-bar').classList.toggle('searching')
-        document.getElementById('lighter').classList.toggle('searching')
-    }
-
     useEffect(() => {
 
         //if there's no user (indicated by the display name) => go to login page...
-        if ( !user.displayName ) {
+        if ( !user.uid ) {
 
             document.getElementById('main').classList.add('login')
             document.getElementById('nav').style.display = 'none'
 
-            if (!user.displayName && router.pathname !== '/login') {
+            if (!user.uid && router.pathname !== '/login') {
 
                 router.push('/login')
             }
 
-        } else if (user.displayName) {
+        } else {
             chooseActive()
             !isLogged && setIsLogged(true)
         }
@@ -63,6 +58,12 @@ const Nav = () => {
         }
     }
 
+    const goToSearch = () => {
+
+        const SEARCH_HREF = '#search'
+        window.location.hash = SEARCH_HREF
+    }
+
     const chooseActive = () => {
 
         const path = router.pathname.split('/')[1]
@@ -73,7 +74,6 @@ const Nav = () => {
             const hrefSplitted = li.getAttribute('href').split('/')[1]
             if ( hrefSplitted === path ) {
                 li.classList.add('active')
-                console.log(li.firstChild.classList)
             } else {
 
                 li.classList.remove('active')
@@ -85,14 +85,11 @@ const Nav = () => {
         <Contianer themeLight={themeLight} id='nav'>
             <Content>
                 <Items href='/users' onClick={goTo}>
-                    { user.displayName && 
+                    { user.uid && 
                         <>
                             <UserImg onClick={goToIcon} src={user.photoURL} />
                         </>
                     }
-                </Items>
-                <Items href='/search' onClick={clickSearch}>
-                    <Icon onClick={goToIcon} className='icons' icon={bxsSearchAlt2} color={iconColor} />
                 </Items>
                 <Items href='/' onClick={goTo}>
                     <Icon onClick={goToIcon} className='icons' icon={homeFilled} color={iconColor} />
@@ -100,8 +97,11 @@ const Nav = () => {
                 <Items href='/books' onClick={goTo}>
                     <Icon onClick={goToIcon} className='icons' icon={booksIcon} color={iconColor} />
                 </Items>
-                <Items href='/' onClick={goTo}>
-                    <Icon onClick={goToIcon} className='icons' icon={bxListPlus} color={iconColor} />
+                <Items href='/users' onClick={goTo}>
+                    <Icon onClick={goToIcon} className='icons' icon={userEdit} color={iconColor} />
+                </Items>
+                <Items onClick={goToSearch} href='/search'>
+                    <Icon onClick={goToSearch} className='icons' icon={bxsSearchAlt2} color={iconColor} />
                 </Items>
             </Content>
         </Contianer>    

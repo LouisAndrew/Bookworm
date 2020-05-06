@@ -43,6 +43,10 @@ const Layout = props => {
            font-size: 16px;
        }
 
+       html {
+           scroll-behavior: smooth;
+       }
+
        h1 {
            font-size: 2.5rem;
        }

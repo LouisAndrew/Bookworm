@@ -12,10 +12,10 @@ const Header = () => {
     const { user, themeLight, changeTheme } = useContext(UserContext)
 
     return (
-        <Container loggedIn={user.displayName}>
-            { user.displayName && <SearchBar /> }
+        <Container loggedIn={user.uid}>
+            { user.uid && <SearchBar /> }
             <div className='floating'>
-                { user.displayName && <h2>BookWorm</h2> }
+                { user.uid && <h2>BookWorm</h2> }
                 <Icon id='lighter' onClick={changeTheme} className='icon' icon={ themeLight ? lightbulbCflOff : lightbulbCfl } />
             </div>
         </Container>
@@ -75,6 +75,11 @@ const Container = styled.header`
                 top: 3vh;
             }
         }
+
+        @media screen and ( max-width: 840px ) {
+
+            top: 8vh;  
+        } 
 
         h2 {
 

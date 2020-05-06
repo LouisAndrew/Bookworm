@@ -18,10 +18,7 @@ const Login = () => {
 
     const { user, addUser, themeLight } = useContext(UserContext)
 
-    console.log(userData)
-
-    if (userData.displayName) {
-        console.log('wtf')
+    if ( userData.uid ) {
         addUser(userData)
             .then(() => {
                 console.log('success adding user')
