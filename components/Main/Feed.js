@@ -23,7 +23,7 @@ const Feed = () => {
 const FeedContainer = ({ revs }) => (
     <FCon>
         {
-            revs.map(revs => <Rev {...revs} />)
+            revs.map(revs => <Rev isComment={false} {...revs} />)
         }
     </FCon>
 )

@@ -11,7 +11,7 @@ const RevContainer = ({ bookId }) => {
       return (
             <>
                   {
-                        collected[0] && collected.map(rev => <Rev {...rev} />)
+                        collected[0] && collected.map(rev => <Rev {...rev} isComment={false} />)
                   }
             </>
       )

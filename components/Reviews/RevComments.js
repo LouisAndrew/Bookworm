@@ -12,7 +12,7 @@ const RevComments = ({ cid }) => {
 
     return (
         <Wrapper>
-           { data.revId && <Rev {...data} />  }
+           { data.revId && <Rev {...data} isComment />  }
         </Wrapper>
     )
 }
@@ -21,4 +21,12 @@ export default RevComments
 
 const Wrapper = styled.div`
     
+    .rv {
+
+        width: 100%;
+        margin: 0;
+        padding: 0;
+
+        flex-direction: row-reverse;
+    }
 `

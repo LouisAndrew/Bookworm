@@ -13,7 +13,9 @@ import Button from '../basics/Button'
 import RevComments from './RevComments'
 
 
-const Rev = ({ uid , rev, bookName, dateCreated, bookId, revId, fireCount, commentList }) => {
+const Rev = ({ uid , rev, bookName, dateCreated, bookId, revId, fireCount, commentList, isComment = false }) => {
+
+      console.log(isComment)
 
       const setMonth = monthNum => {
 
@@ -87,8 +89,7 @@ const Rev = ({ uid , rev, bookName, dateCreated, bookId, revId, fireCount, comme
                               <p>{rev} </p>
                               <div className='icons'>
                                     <div className='icon-cont'>
-                                          <Icon onClick={clickComment} icon={bxsCommentDetail} className='icon' id={`comment-${revId}`} color={ commentClicked ? 'blue' : pathUnclickedColor } />
-
+                                          { !isComment && <Icon onClick={clickComment} icon={bxsCommentDetail} className='icon' id={`comment-${revId}`} color={ commentClicked ? 'blue' : pathUnclickedColor } />}
                                     </div>
                                     <div className='icon-cont'>
                                           <Icon onClick={clickFire} icon={fireIcon} className='icon' id={`fire-${revId}`} color={ fireClicked ? 'red' : pathUnclickedColor } />
@@ -97,15 +98,18 @@ const Rev = ({ uid , rev, bookName, dateCreated, bookId, revId, fireCount, comme
                               </div>
                         </div>
                   </div>
-                  <CommentContainer>
+                  <CommentContainer id={`type-${revId}`}>
                         { 
                               (commentList && commentList[0]) && commentList.map(cid => <RevComments cid={cid} />)
                         }
+                        {
+                              !isComment && <CommentArea>
+                                                <Textarea ref={commentRef} placeholder='Write a comment' onChange={resizeTextArea} />
+                                                <Button onClick={submitComment} color='#fff' text='submit' bColor='pink' />
+                                            </CommentArea> 
+                        }
                   </CommentContainer>
-                  <CommentArea id={`type-${revId}`}>
-                        <Textarea ref={commentRef} placeholder='Write a comment' onChange={resizeTextArea} />
-                        <Button onClick={submitComment} color='#fff' text='submit' bColor='pink' />
-                  </CommentArea> 
+
             </Container>
       )
 }
@@ -114,19 +118,10 @@ export default Rev
 
 const CommentArea = styled.form`
 
-      width: 80%;
-      max-height: 0;
-
-      overflow: hidden;
-      transition: .4s;
+      width: 100%;
 
       display: flex;
       margin: 1rem 0;
-
-      &.on {
-
-            max-height: 100vh;
-      }
 `
 
 const Textarea = styled.textarea`
@@ -144,6 +139,22 @@ const Textarea = styled.textarea`
 
 const CommentContainer = styled.div`
 
+      max-height: 0;
+      overflow: hidden;
+      transition: .4s;
+
+      width: 80%;
+
+      &.on {
+
+            max-height: 500vh;
+
+      }
+
+      @media screen and ( max-width: 840px ) {
+            
+            width: 90%;
+      }
 `
 
 const Container = styled.div`
