@@ -36,9 +36,9 @@ const Nav = () => {
                 router.push('/login')
             }
 
-        } else if (!isLogged && user.displayName) {
-            setIsLogged(true)
+        } else if (user.displayName) {
             chooseActive()
+            !isLogged && setIsLogged(true)
         }
     })
 
@@ -61,11 +61,11 @@ const Nav = () => {
             
             const hrefSplitted = li.getAttribute('href').split('/')[1]
             if ( hrefSplitted === path ) {
-                li.firstChild.classList.add('active')
+                li.classList.add('active')
                 console.log(li.firstChild.classList)
             } else {
 
-                li.firstChild.classList.remove('active')
+                li.classList.remove('active')
             }
         })
     }
@@ -77,33 +77,33 @@ const Nav = () => {
                     { user.displayName && 
                         <>
                             <UserImg src={user.photoURL} />
-                            <Link href='/users'>
+                            {/* <Link href='/users'>
                                 <h3>{user.displayName}</h3> 
-                            </Link>
+                            </Link> */}
                         </>
                     }
                 </Items>
                 <Items href='/search' onClick={clickSearch}>
                     <Icon className='icons' icon={bxsSearchAlt2} color={iconColor} />
-                    <h3>Search</h3>
+                    {/* <h3>Search</h3> */}
                 </Items>
                 <Items href='/' onClick={goTo}>
                     <Icon className='icons' icon={homeFilled} color={iconColor} />
-                    <Link href='/'>
+                    {/* <Link href='/'>
                         <a>Home</a>
-                    </Link>
+                    </Link> */}
                 </Items>
                 <Items href='/books' onClick={goTo}>
                     <Icon className='icons' icon={booksIcon} color={iconColor} />
-                    <Link href='/books'>
+                    {/* <Link href='/books'>
                         <a>Books</a>
-                    </Link>
+                    </Link> */}
                 </Items>
                 <Items href='/' onClick={goTo}>
                     <Icon className='icons' icon={bxListPlus} color={iconColor} />
-                    <Link href='/'>
+                    {/* <Link href='/'>
                         <a>To-Read</a>
-                    </Link>
+                    </Link> */}
                 </Items>
             </Content>
         </Contianer>    
@@ -118,8 +118,7 @@ const UserImg = styled.img`
     width: 60px;
     border-radius: 50%;
 
-    margin: 3vh 1vh;
-    margin-left: 2vh;
+    margin: 3vh 2vh;
 
     @media screen and ( max-width: 464px ) {
         
@@ -139,7 +138,7 @@ const Items = styled.li`
 
     overflow: hidden;
     transition: .2s;
-
+    
     h3 {
 
         /* max-width: 0; */
@@ -153,11 +152,10 @@ const Items = styled.li`
 
     .icons {
 
+        margin: 3vh;
+
         height: 30px;
         width: 30px;
-
-        margin: 3vh 1vh;
-        margin-left: 2vh;
 
         & + a, & + h3 {
 
@@ -181,13 +179,29 @@ const Items = styled.li`
 
         @media screen and ( max-width: 840px ) {
             
-            margin: 1vh 2vh;
+            margin: 3vh;
         }
     }
 
     &:hover {
 
-        background-color: ${({ theme }) => theme.fg};
+        border-left: 3px solid ${({ theme }) => theme.bg};
+    }   
+
+    &.active {
+
+        /* background-color: ${({ theme }) => theme.bg}; */
+        border-left: 3px solid ${({ theme }) => theme.bg};
+
+        /* .icons {
+
+            border-bottom: 3px solid ${({ theme }) => theme.pink};
+        } */
+
+        .icons {
+
+            path { fill: ${({ theme }) => theme.bg}; }
+        }
     }
 `
 
@@ -233,7 +247,7 @@ const Contianer = styled.nav`
     height: 100vh;
     position: fixed;
 
-    background-color: ${({ theme }) => theme.bg};
+    background-color: ${({ theme }) => theme.pink};
     box-shadow: ${({ theme }) => theme.shadow};
 
     @media screen and ( max-width: 840px ) {

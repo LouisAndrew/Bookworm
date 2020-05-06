@@ -69,7 +69,7 @@ const Layout = props => {
 
        #main {
 
-           margin-left: 12vh;
+           margin-left: 6vh;
            padding: 5vh 10vw;
 
            min-height: calc( 100vh - 2rem - 3vh );
