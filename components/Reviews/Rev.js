@@ -82,7 +82,7 @@ const Rev = ({ uid , rev, bookName, dateCreated, bookId, revId, fireCount, comme
 
             e.preventDefault()
             const comment = commentRef.current.value
-            postComment(user, revId, comment, bookId, bookName)
+            postComment(ctx.user, revId, comment, bookId, bookName)
             //rerendering to get newest data from firestore
             rerender()
       }
