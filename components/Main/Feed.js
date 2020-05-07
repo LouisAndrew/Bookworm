@@ -4,26 +4,25 @@ import styled from 'styled-components'
 import useNewestRev from '../../hooks/useNewestRev'
 import Rev from '../Reviews/Rev'
 
-const Feed = () => {
+const Feed = ({ rerender }) => {
 
     const revs = useNewestRev()
 
-    console.log('rendering feed')
 
     return (
         <Container>
             <h1>Feed</h1>
             {
-                ( revs[0]) && <FeedContainer revs={revs} />
+                ( revs[0]) && <FeedContainer rerender={rerender} revs={revs} />
             }
         </Container>
     )
 }
 
-const FeedContainer = ({ revs }) => (
+const FeedContainer = ({ revs, rerender }) => (
     <FCon>
         {
-            revs.map(revs => <Rev isComment={false} {...revs} />)
+            revs.map(revs => <Rev rerender={rerender} isComment={false} {...revs} />)
         }
     </FCon>
 )

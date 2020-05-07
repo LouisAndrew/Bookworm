@@ -29,6 +29,7 @@ const SearchBar = () => {
     }
  
     const searchFor = e => {
+        console.log(ref.current.value)
         e.preventDefault()
         ref.current.value = ''
         router.push({ pathname: '/search', query: { q: search } })

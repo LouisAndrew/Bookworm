@@ -13,9 +13,7 @@ import Button from '../basics/Button'
 import RevComments from './RevComments'
 
 
-const Rev = ({ uid , rev, bookName, dateCreated, bookId, revId, fireCount, commentList, isComment = false }) => {
-
-      console.log(isComment)
+const Rev = ({ uid , rev, bookName, dateCreated, bookId, revId, fireCount, commentList, isComment = false, rerender, cId }) => {
 
       const setMonth = monthNum => {
 
@@ -26,15 +24,22 @@ const Rev = ({ uid , rev, bookName, dateCreated, bookId, revId, fireCount, comme
       const user = uid && useUserData(uid)
       const createdAt = dateCreated && dateCreated.toDate()
       const time = createdAt && `${createdAt.getDate()}-${setMonth(createdAt.getMonth())}-${createdAt.getFullYear()}`
+
       const router = useRouter()
       const ctx = useContext(UserContext)
       const commentRef = useRef()
 
-      const [ fireClicked, setFireClicked ] = useState(ctx.provideIsFired(revId))
+      //based on if the user clicked AFTER the el is rendered
+      const [ fireClicked, setFireClicked ] = useState( ctx.provideIsFired( isComment ? cId : revId ) )
       const [ commentClicked, setCommentClicked ] = useState(false)
-      const [ defaultFireClicked, setDefaultFireClicked ] = useState(ctx.provideIsFired(revId))
+
+      //double check if the fire is checked => default, unchangeable state
+      const [ defaultFireClicked, setDefaultFireClicked ] = useState(ctx.provideIsFired( isComment ? cId : revId ))
       const pathUnclickedColor = ctx.themeLight ? 'black' : 'white'
 
+      //if the default is clicked, (user fired rev on another, past session) => decr fire count by 1=> will be incremented later
+      //increment the fire count just based on ui here
+      //so no need to get realtime data from firestore
       defaultFireClicked && fireCount--
 
       const clickBook = () => {
@@ -68,6 +73,7 @@ const Rev = ({ uid , rev, bookName, dateCreated, bookId, revId, fireCount, comme
 
       const clickComment = () => {
 
+            //toggle comments!
             setCommentClicked(!commentClicked)
             document.getElementById(`type-${revId}`).classList.toggle('on')
       }
@@ -77,6 +83,8 @@ const Rev = ({ uid , rev, bookName, dateCreated, bookId, revId, fireCount, comme
             e.preventDefault()
             const comment = commentRef.current.value
             postComment(user, revId, comment, bookId, bookName)
+            //rerendering to get newest data from firestore
+            rerender()
       }
 
       return (
@@ -90,6 +98,7 @@ const Rev = ({ uid , rev, bookName, dateCreated, bookId, revId, fireCount, comme
                               <div className='icons'>
                                     <div className='icon-cont'>
                                           { !isComment && <Icon onClick={clickComment} icon={bxsCommentDetail} className='icon' id={`comment-${revId}`} color={ commentClicked ? 'blue' : pathUnclickedColor } />}
+                                          <p>{(!isComment && commentList) && commentList.length}</p>
                                     </div>
                                     <div className='icon-cont'>
                                           <Icon onClick={clickFire} icon={fireIcon} className='icon' id={`fire-${revId}`} color={ fireClicked ? 'red' : pathUnclickedColor } />
@@ -100,7 +109,7 @@ const Rev = ({ uid , rev, bookName, dateCreated, bookId, revId, fireCount, comme
                   </div>
                   <CommentContainer id={`type-${revId}`}>
                         { 
-                              (commentList && commentList[0]) && commentList.map(cid => <RevComments cid={cid} />)
+                              (commentList && commentList[0]) && commentList.map(cid => <RevComments rerender={rerender} cid={cid} />)
                         }
                         {
                               !isComment && <CommentArea>
@@ -225,6 +234,8 @@ const Container = styled.div`
                               display: flex;
                               align-items: center;
 
+                              margin: 0 2%;
+
                               .icon {
                                     
                                     path {
@@ -243,7 +254,11 @@ const Container = styled.div`
                                     &.checked {
 
                                     }
-                              }     
+                              }  
+
+                              p {
+                                    margin: 0 10%;
+                              }   
                         }
 
                   }

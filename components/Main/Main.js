@@ -19,7 +19,7 @@ const Main = () => {
 
         setTimeout(() => {
             hotReload && setHotReload(false)
-        }, 200)
+        }, 400)
     }, [ hotReload ])
 
     console.log('rendering')
@@ -28,7 +28,7 @@ const Main = () => {
         <Container className='wrap'>
             <Content>
                 {user && <>
-                            { !hotReload ? <Feed className='flex-item' /> : <h1>loading</h1> }
+                            { !hotReload ? <Feed rerender={rerender} className='flex-item' /> : <h1>loading</h1> }
                             <Recommendation className='flex-item' rerender={rerender} />
                          </>}
             </Content>

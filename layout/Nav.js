@@ -172,6 +172,11 @@ const Items = styled.li`
             
             border-bottom: 3px solid ${({ theme }) => theme.bg};
             border-left: none;
+
+            &:hover {
+
+                border-left: none;
+            }
         }
     }
 `

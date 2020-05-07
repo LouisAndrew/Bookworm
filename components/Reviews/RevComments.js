@@ -4,15 +4,13 @@ import styled from 'styled-components'
 import useComment from '../../hooks/useComment'
 import Rev from './Rev'
 
-const RevComments = ({ cid }) => {
+const RevComments = ({ cid, rerender }) => {
 
-    console.log(cid)
     const data = useComment(cid)
-    console.log(data)
 
     return (
         <Wrapper>
-           { data.revId && <Rev {...data} isComment />  }
+           { data.revId && <Rev rerender={rerender} {...data} isComment />  }
         </Wrapper>
     )
 }
