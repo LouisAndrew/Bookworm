@@ -27,8 +27,8 @@ const Layout = props => {
         // gray: '#444140',
         // dark: '#1E1E24',
 
-        bg: themeLight ? '#FFF' : '#292F36',
-        fg: themeLight ? '#F3F3F3' : '#2E2E2E',
+        bg: themeLight ? '#F3F3F3' : '#202020',
+        fg: themeLight ? '#FFF' : '#2E2E2E',
         pink: '#FF715B',
         font: themeLight ? '#000' : '#fff'
     }
@@ -84,7 +84,7 @@ const Layout = props => {
 
            &.light {
 
-               background-color: #FFF;
+               background-color: #F3F3F3;
                
                h1, h2, h3, h4, h5, h6, a, p, button, span {
 
@@ -95,7 +95,7 @@ const Layout = props => {
 
            &.dark {
 
-                background-color: #292F36;
+                background-color: #202020;
 
                 h1, h2, h3, h4, h5, h6, a, p, button, span {
 

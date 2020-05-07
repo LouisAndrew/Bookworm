@@ -43,7 +43,7 @@ const Nav = () => {
         const href = e.target.getAttribute('href')
         if ( href !== router.pathname && href ) {
 
-            router.push(href, { shallow: true })
+            router.push(href)
         }
     }
 
@@ -53,8 +53,7 @@ const Nav = () => {
         const parent = e.target.parentElement.parentElement
         const href = parent && parent.getAttribute('href')
         if ( href !== router.pathname && href ) {
-            console.log(href)
-            router.push(href, { shallow: true })
+            router.push(href)
         }
     }
 

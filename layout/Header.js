@@ -15,7 +15,7 @@ const Header = () => {
         <Container loggedIn={user.uid}>
             { user.uid && <SearchBar /> }
             <div className='floating'>
-                { user.uid && <h2>BookWorm</h2> }
+                { user.uid && <h3>BookWorm</h3> }
                 <Icon id='lighter' onClick={changeTheme} className='icon' icon={ themeLight ? lightbulbCflOff : lightbulbCfl } />
             </div>
         </Container>
@@ -81,7 +81,7 @@ const Container = styled.header`
             top: 8vh;  
         } 
 
-        h2 {
+        h3 {
 
             padding: 1vh;
         }
