@@ -3,17 +3,17 @@ import styled from 'styled-components'
 
 import useNewestRev from '../../hooks/useNewestRev'
 import Rev from '../Reviews/Rev'
+import Loading from '../basics/Loading'
 
-const Feed = ({ rerender }) => {
+const Feed = ({ rerender, hotReload }) => {
 
     const revs = useNewestRev()
-
 
     return (
         <Container>
             <h1>Feed</h1>
             {
-                ( revs[0]) && <FeedContainer rerender={rerender} revs={revs} />
+                ( revs[0] && !hotReload ) ? <FeedContainer rerender={rerender} revs={revs} /> : <Loading />
             }
         </Container>
     )
@@ -37,6 +37,8 @@ const FCon = styled.div`
 const Container = styled.div`
     width: 100%;
     padding-right: 10%;
+
+    position: relative;
 
     @media screen and ( max-width: 840px ) {
         

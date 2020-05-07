@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import Feed from './Feed'
 import { UserContext } from '../../helper/UserContext'
 import Recommendation from './Recommendation'
+import Loading from '../basics/Loading'
 
 const Main = () => {
 
@@ -27,8 +28,8 @@ const Main = () => {
     return (
         <Container className='wrap'>
             <Content>
-                {user && <>
-                            { !hotReload ? <Feed rerender={rerender} className='flex-item' /> : <h1>loading</h1> }
+                { user && <>
+                            <Feed rerender={rerender} hotReload={hotReload} className='flex-item' />
                             <Recommendation className='flex-item' rerender={rerender} />
                          </>}
             </Content>

@@ -12,6 +12,14 @@ const useNewestRev = () => {
 
         dbRef
             .orderBy('dateCreated', 'desc')
+            // .onSnapshot(querySnapshot => {
+
+            //     let temp = [ ]
+
+            //     querySnapshot.forEach(doc => temp = [...temp, doc.data()])
+
+            //     setRev(temp)
+            // })
             .get()
             .then(querySnapshot => {
 
