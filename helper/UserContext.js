@@ -9,12 +9,14 @@ const UserContextProvider = props => {
     const [ user, setUser ] = useState({ })
     const [ fireList, setFireList ] = useState([ ])
     const [ themeLight, setThemeLight ] = useState(true)
+    const [ bookList, setBookList ] = useState([ ])
 
     const addUser = user => {
 
         setUser(user)
         //retrieving firelist from user => no need to fetch from fs every request.
         setFireList(user.fireList)
+        setBookList(user.bookList)
         return new Promise((res, rej) => {
             res('success')
         })
@@ -48,6 +50,27 @@ const UserContextProvider = props => {
         })
     }
 
+    const updateBookList = ( bookId, isAdding ) => {
+
+        let temp = bookList || [ ]
+        
+        if ( !bookId ) return
+
+        if ( isAdding ) {
+
+            temp = [...temp, bookId]
+        } else {
+
+            const index = temp.indexOf(bookId)
+            console.log(index, 'index')
+            index > -1 && temp.splice(index, 1)
+            console.log(temp)
+        }
+
+        console.log(temp)
+        setBookList(temp)
+    }
+
     const changeTheme = () => {
         setThemeLight(!themeLight)
     }
@@ -55,7 +78,7 @@ const UserContextProvider = props => {
     const provideIsFired = revId => fireList.indexOf(revId) > -1 ? true : false
 
     return (
-        <UserContext.Provider value={{ user, fireList, themeLight, addUser, removeUser, updateFireList, provideIsFired, changeTheme }}>
+        <UserContext.Provider value={{ user, fireList, themeLight, bookList, addUser, removeUser, updateFireList, provideIsFired, changeTheme, updateBookList }}>
             {props.children}
         </UserContext.Provider>
     )

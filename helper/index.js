@@ -142,10 +142,20 @@ export const addCommentList = async ( cId, revId ) => {
 
     const dbRevRef = db().collection('Reviews').doc(revId)
 
-    console.log('adding')
-
     const add = db.FieldValue.arrayUnion(cId)
     dbRevRef.update({
         commentList: add
+    })
+}
+
+export const updateBookListFirestore = async ( bookId, user, isAdding ) => {
+
+    const dbRef = db().collection('User').doc(user.uid) 
+
+    const add = db.FieldValue.arrayUnion(bookId)
+    const remove = db.FieldValue.arrayRemove(bookId)
+
+    dbRef.update({
+        bookList: isAdding ? add : remove
     })
 }

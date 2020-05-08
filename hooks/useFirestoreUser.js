@@ -22,7 +22,8 @@ const useFirestoreUser = userFromCookie => {
                         displayName: userFromCookie.displayName,
                         photoURL: userFromCookie.photoURL,
                         uid: userFromCookie.uid,
-                        fireList: [ ]
+                        fireList: [ ],
+                        bookList: [ ]
                     }
 
                     dbRef.set(userData)

@@ -40,6 +40,11 @@ const Container = styled.div`
 
     position: relative;
 
+    .loading {
+
+        transform: translate(-10%, 50%);
+    }
+
     @media screen and ( max-width: 840px ) {
         
         padding-right: 0;

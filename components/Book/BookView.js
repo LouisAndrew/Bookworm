@@ -1,29 +1,54 @@
 import React, { useContext, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Icon } from '@iconify/react'
-import caretLeftOutlined from '@iconify/icons-ant-design/caret-left-outlined'
+import addIcon from '@iconify/icons-carbon/add'
+import closeFill from '@iconify/icons-eva/close-fill'
+import bxCheck from '@iconify/icons-bx/bx-check'
 
 import Book from '../basics/Book'
 import { extract } from '../search/Result'
 import Button from '../basics/Button'
 import { UserContext } from '../../helper/UserContext'
-import { submitRev } from '../../helper'
+import { updateBookListFirestore } from '../../helper'
 import RevContainer from '../Reviews/RevContainer'
 import Postable from '../basics/Postable'
+import Loading from '../basics/Loading'
 
 const BookView = ({ data }) => {
 
       const [ openSummary, setOpenSummary ] = useState(false)
+      const [ showRemove, setShowRemove ] = useState(false)
+      const { themeLight, user, bookList, updateBookList } = useContext(UserContext)
+      const [ bookAdded, setBookAdded ] = useState( bookList ? bookList.some(itm => itm === data.id) : false )
+
       const volumeInfo = data && extract(data)
       const bookName = data.volumeInfo.title
-      const { themeLight } = useContext(UserContext)
       const info = data.volumeInfo.subtitle
+      const addBookColor = themeLight ? 'black' : 'white'
 
-      // const expand = () => {
+      const clickBook = () => {
 
-      //       document.getElementById('expand').classList.toggle('expanded')
-      //       setOpenSummary(!openSummary)
-      // }
+            const statement = !bookAdded
+            setBookAdded(statement)
+            updateBookListFirestore( data.id, user, statement )
+            updateBookList( data.id, statement )
+      }
+
+      const addBookHover = () => {
+
+            if ( bookAdded && !showRemove ) {
+
+                  setShowRemove(true)
+            }
+      }
+
+      const addBookLeave = () => {
+
+            if ( bookAdded && showRemove ) {
+
+                  setShowRemove(false)
+            }
+      }
 
       return (
             <Container>
@@ -33,7 +58,6 @@ const BookView = ({ data }) => {
                               <BookDetails specificBook={data} openSummary={openSummary} bookName={bookName} bookId={data.id} info={data.volumeInfo.subtitle} />
                         </Item>
                         <Item className='right'>
-                              {/* <Icon onClick={expand} id='expand' className='icon' icon={caretLeftOutlined} color={themeLight ? 'black' : 'white' } /> */}
                               <Book click={() => {}} {...volumeInfo}  />
                               <Det reviewAvailable={info}>
                                     <div>
@@ -41,10 +65,52 @@ const BookView = ({ data }) => {
                                           <p>{ info ? info : 'No Book Review is Available'} </p>
                                     </div>
                               </Det>
+                              {/* <Button text='Add to Book List!' bColor='pink' color='white' /> */}
+                              <div className='book-list'>
+                                    <h5>{ bookAdded ? 'Book is available on your booklist!' : 'Click to add this book to your booklist!' } </h5>
+                                    <Icon 
+                                          id='add-book'
+                                          onClick={clickBook} 
+                                          onMouseEnter={addBookHover}
+                                          onMouseLeave={addBookLeave}
+                                          icon={ bookAdded ? showRemove ? closeFill : bxCheck : addIcon } 
+                                          color={ bookAdded ? showRemove ? addBookColor : 'green' : addBookColor }
+                                    />
+                              </div>
                         </Item>
 
                   </Content>
             </Container>
+      )
+}
+
+const BookDetails = ({ reviews, info, bookId, bookName, openSummary, specificBook }) => {
+
+      const ctx = useContext(UserContext)
+      const [ hotReload, setHotReload ] = useState(false)
+
+      const rerender = () => {
+            setHotReload(true)
+      }
+
+      useEffect(() => {
+
+            if (hotReload) {
+
+                  //set the hot reload off
+                  setTimeout(() => {
+                        setHotReload(false)
+                  }, 200)
+            }
+      }, [ hotReload ])
+
+      return (
+            <>
+                  {/* { !openSummary && <h4>Click to open book summary</h4> } */}
+                  <Postable specificBook={specificBook} rerender={rerender} />
+
+                  { !hotReload ? <RevContainer bookName={bookName} bookId={bookId} /> : <Loading /> }
+            </>
       )
 }
 
@@ -113,12 +179,29 @@ const Item = styled.div`
                         }
                   }
 
-            &:hover {
+                  &:hover {
 
-                  background-color: ${({ theme }) => theme.bg};
-                  cursor: default;
+                        background-color: ${({ theme }) => theme.bg};
+                        cursor: default;
+                  }
             }
-      }
+
+            .book-list {
+
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+
+                  margin-top: 10%;
+
+                  #add-book {
+
+                        width: 4vh;
+                        height: 4vh;
+
+                        margin-left: 2vh;
+                  }
+            }
 
             .icon {
 
@@ -151,6 +234,24 @@ const Item = styled.div`
                   }
             }
       }
+
+      &.left {
+
+            position: relative;
+
+            .loading {
+
+                  transform: translate(0, 50%);
+            }
+      }
+
+      @media screen and ( max-width: 840px ) {
+            
+            &.right {
+
+                  margin-bottom: 10%;
+            }
+      }
 `
 
 const Content = styled.section`
@@ -170,41 +271,3 @@ const Container = styled.div`
       ${({ theme }) => theme.center()}
 
 `
-
-
-const BookDetails = ({ reviews, info, bookId, bookName, openSummary, specificBook }) => {
-
-      const ctx = useContext(UserContext)
-      const [ hotReload, setHotReload ] = useState(false)
-
-      const resizeTextArea = e => {
-
-            const el = e.target
-            el.style.height = '10px'
-            e.target.style.height = `${e.target.scrollHeight}px`
-      }
-
-      const rerender = () => {
-            setHotReload(true)
-      }
-
-      useEffect(() => {
-
-            if (hotReload) {
-
-                  //set the hot reload off
-                  setTimeout(() => {
-                        setHotReload(false)
-                  }, 200)
-            }
-      }, [ hotReload ])
-
-      return (
-            <>
-                  {/* { !openSummary && <h4>Click to open book summary</h4> } */}
-                  <Postable specificBook={specificBook} rerender={rerender} />
-
-                  { !hotReload && <RevContainer bookName={bookName} bookId={bookId} /> }
-            </>
-      )
-}

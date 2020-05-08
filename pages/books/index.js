@@ -1,10 +1,9 @@
 import Layout from '../../layout'
-import Loading from '../../components/basics/Loading'
+import ToRead from '../../components/ToRead/ToRead'
 
 const UsersBook = () => (
     <Layout>
-        <h3>My To-Read-List</h3>
-        <Loading />
+        <ToRead />
     </Layout>
 )
 

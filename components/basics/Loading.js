@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import Ball from '../../assets/Ball.svg'
 
 const Loading = props => (
-    <Container {...props}>
+    <Container className='loading' {...props}>
         <Ball />
     </Container>
 )
@@ -20,5 +20,4 @@ const Container = styled.div`
     top: 0;
 
     ${({ theme }) => theme.center()};
-
 `
