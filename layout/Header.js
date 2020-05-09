@@ -86,4 +86,18 @@ const Container = styled.header`
             padding: 1vh;
         }
     }
+
+    @media screen and ( max-width: 840px ) {
+        
+        flex-direction: column-reverse;
+
+        .floating {
+
+            position: relative;
+            top: 0;
+            right: 0;
+            
+            margin: 2vh 0;
+        }
+    }
 `

@@ -114,6 +114,12 @@ const Container = styled.form`
         max-height: 50vh;
     } */
 
+    @media screen and ( max-width: 840px ) {
+
+        width: 50vw;
+        transform: translate(0);
+    }
+
     @media screen and ( max-width: 464px ) {
 
         width: 70vw;

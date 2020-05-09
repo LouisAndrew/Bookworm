@@ -109,7 +109,7 @@ const Layout = props => {
            
             #main {
 
-                padding: 5vh 20%;
+                padding: 2vh 20%;
                 margin-bottom: 8vh;
             }
        }
