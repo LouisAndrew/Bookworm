@@ -147,7 +147,7 @@ const BookContainer = styled.div`
             padding: 2% 5%;
         }
 
-        @media screen and ( max-width: 464px ) {
+        @media screen and ( max-width: 850px ) {
             
             width: 100%;
         }
