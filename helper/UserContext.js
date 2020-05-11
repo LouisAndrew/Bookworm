@@ -62,12 +62,9 @@ const UserContextProvider = props => {
         } else {
 
             const index = temp.indexOf(bookId)
-            console.log(index, 'index')
             index > -1 && temp.splice(index, 1)
-            console.log(temp)
         }
 
-        console.log(temp)
         setBookList(temp)
     }
 

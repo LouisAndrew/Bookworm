@@ -8,9 +8,6 @@ const ToRead = () => {
 
     const { user, bookList } = useContext(UserContext)
 
-    console.log(user)
-    console.log(bookList)
-
     return (
         <Container>
             {

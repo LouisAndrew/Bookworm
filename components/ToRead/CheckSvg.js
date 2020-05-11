@@ -1,21 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 
 import Sprite from '../../assets/60fps/sprite_60fps.svg'
+import { UserContext } from '../../helper/UserContext'
 
-const CheckSvg = () => {
+const CheckSvg = props => {
 
-    const click = e => {
-        
-        const el = e.target.classList
-        // if ( el.contains('play') ) el.replace('play', 'unplay')
-        // else if ( el.contains('unplay') ) el.replace('unplay', 'play')
-        // else el.add('play')
-        el.toggle('play')
-    }
+    const { themeLight } = useContext(UserContext)
 
     return (
-        <Container className='shapeshifter' onClick={click} />
+        <Container {...props} $themeLight={themeLight} className={`shapeshifter ${props.isRead && 'play'}`} />
     )
 }
 
@@ -24,5 +18,5 @@ export default CheckSvg
 const Container = styled.div`
     height: 24px;
     width: 24px;
-    background-image: url('/sprite-check.svg');
+    background-image: ${props => props.$themeLight ? 'url(/sprite_dark.svg)' : 'url(sprite.svg)'};
 `

@@ -17,7 +17,7 @@ export const resizeTextArea = e => {
     e.target.style.height = `${e.target.scrollHeight}px`
 }
 
-const Postable = ({ rerender, specificBook }) => {
+const Postable = ({ rerender, specificBook, id }) => {
 
     const searchRef = useRef()
     const textRef = useRef()
@@ -91,7 +91,7 @@ const Postable = ({ rerender, specificBook }) => {
     })
 
     return (
-        <Container>
+        <Container id={id}>
             <Textarea placeholder={ specificBook ? `Write a comment for ${specificBook.volumeInfo.title} here` : 'Write a review here!' } onChange={resizeTextArea} ref={textRef} />
             <div className='upper'>
                 { !book.volumeInfo ? form : bookFocuse}

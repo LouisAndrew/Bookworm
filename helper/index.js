@@ -131,8 +131,6 @@ export const postComment = async (user, revId, rev, bookId, bookName) => {
         uid: user.uid,
     }
 
-    console.log(data)
-
     dbRef.set(data)
         .then(() => { addCommentList(cId, revId) })
         .catch(err => console.log(err))
