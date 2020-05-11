@@ -7,28 +7,38 @@ import bxsSearchAlt2 from '@iconify/icons-bx/bxs-search-alt-2'
 import bxListPlus from '@iconify/icons-bx/bx-list-plus'
 import booksIcon from '@iconify/icons-wpf/books'
 import userEdit from '@iconify/icons-fa-solid/user-edit'
-import Link from 'next/link'
+import Cookie from 'js-cookie'
 
 import { UserContext } from '../helper/UserContext'
+import useFirestoreUser from '../hooks/useFirestoreUser'
 
 const Nav = () => {
 
     const router = useRouter()
     const [ isLogged, setIsLogged ] = useState(false)
-    const { user, themeLight } = useContext(UserContext)
+    const { user, themeLight, addUser } = useContext(UserContext)
+    const { cookieUser, setCookieUser } = useState( Cookie.get('user') )
     const iconColor = themeLight ? 'black' : 'white' 
+
+    const userTemp = cookieUser && useFirestoreUser(cookieUser)
 
     useEffect(() => {
 
         //if there's no user (indicated by the display name) => go to login page...
         if ( !user.uid ) {
 
-            document.getElementById('main').classList.add('login')
-            document.getElementById('nav').style.display = 'none'
+            if ( !userTemp )  {
 
-            if (!user.uid && router.pathname !== '/login') {
+                document.getElementById('main').classList.add('login')
+                document.getElementById('nav').style.display = 'none'
+    
+                if (!user.uid && router.pathname !== '/login') {
+    
+                    router.push('/login')
+                }
+            } else {
 
-                router.push('/login')
+                addUser(userTemp)
             }
 
         } else {

@@ -8,7 +8,7 @@ import CheckSvg from './CheckSvg'
 import { UserContext } from '../../helper/UserContext'
 import Postable from '../basics/Postable'
 
-const BookToRead = ({ book }) => {
+const BookToRead = ({ book, rerender }) => {
 
     const [ data, setData ] = useState({ })
 
@@ -36,12 +36,13 @@ const BookToRead = ({ book }) => {
 
     return (
         <Container>
-            { volumeInfo && <Book specific={data} {...volumeInfo} /> }
+            { volumeInfo && <Book rerender={rerender} specific={data} {...volumeInfo} /> 
+            }
         </Container>
     )
 }
 
-const Book = ({ imgUrl, heading, id, subheading, specific }) => {
+const Book = ({ imgUrl, heading, id, subheading, specific, rerender }) => {
 
     const [ isRead, setIsRead ] = useState(false)
     const { updateBookList, user, bookList } = useContext(UserContext)
@@ -75,7 +76,7 @@ const Book = ({ imgUrl, heading, id, subheading, specific }) => {
                     <p>{subheading}</p>
                 </div>
             </Label>
-            <Postable id={`toread-${id}`} specificBook={specific} />
+            <Postable rerender={rerender} id={`toread-${id}`} specificBook={specific} />
         </BookContainer>
     )
 }
@@ -155,5 +156,6 @@ const BookContainer = styled.div`
 `
 
 const Container = styled.div`
-  
+    
+    position: relative;
 `

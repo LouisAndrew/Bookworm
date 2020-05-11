@@ -163,6 +163,11 @@ const FocusBook = styled.div`
         position: absolute;
         right: 5%;
     }
+
+    @media screen and ( max-width: 840px ) {
+        
+        width: 100%;
+    }
 `
 
 const BookContainer = styled.div`
