@@ -1,5 +1,6 @@
 import React from 'react'
 import UserContextProvider from '../helper/UserContext'
+import '../assets/60fps/check.css'
 
 const MyApp = ({ Component, pageProps }) => {
 

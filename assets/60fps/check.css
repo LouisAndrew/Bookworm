@@ -1,0 +1,37 @@
+@keyframes playCheck {
+  0% {
+    background-position: 0px 0px;
+  }
+  100% {
+    background-position: -1152px 0px;
+  }
+}
+
+@keyframes playUncheck {
+  0% {
+    background-position: 0px 0px;
+  }
+  100% {
+    background-position: -1152px 0px;
+  }
+} 
+
+.shapeshifter {
+  animation-duration: .2s;
+  animation-fill-mode: forwards;
+  animation-timing-function: steps(48);
+  width: 24px;
+  height: 24px;
+  background-repeat: no-repeat;
+
+  transition: .3s;
+}
+.shapeshifter.play {
+  animation-name: playCheck;
+  animation-direction: normal;
+}
+
+.shapeshifter.unplay {
+  animation-name: playCheck;
+  animation-direction: reverse;
+}
