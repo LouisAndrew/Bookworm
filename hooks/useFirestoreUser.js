@@ -14,7 +14,7 @@ const useFirestoreUser = userFromCookie => {
         dbRef.get()
             .then(doc => {
 
-                if (doc.exists) {
+                if ( doc.exists ) {
                     setUser(doc.data())
                 } else {
 

@@ -8,7 +8,7 @@ import CheckSvg from './CheckSvg'
 import { UserContext } from '../../helper/UserContext'
 import Postable from '../basics/Postable'
 
-const BookToRead = ({ book, rerender }) => {
+const BookToRead = ({ book, rerender, toReadElement }) => {
 
     const [ data, setData ] = useState({ })
 
@@ -36,13 +36,12 @@ const BookToRead = ({ book, rerender }) => {
 
     return (
         <Container>
-            { volumeInfo && <Book rerender={rerender} specific={data} {...volumeInfo} /> 
-            }
+            { volumeInfo && <Book toReadElement={toReadElement} rerender={rerender} specific={data} {...volumeInfo} /> }
         </Container>
     )
 }
 
-const Book = ({ imgUrl, heading, id, subheading, specific, rerender }) => {
+const Book = ({ imgUrl, heading, id, subheading, specific, rerender, toReadElement }) => {
 
     const [ isRead, setIsRead ] = useState(false)
     const { updateBookList, user, bookList } = useContext(UserContext)
@@ -69,7 +68,7 @@ const Book = ({ imgUrl, heading, id, subheading, specific, rerender }) => {
         <BookContainer $id={id}>
             <Input onChange={clickBook} id={`book-${id}`} />
             <Label for={`book-${id}`}>
-                <CheckSvg isRead={isRead} className='cbox' />
+                { toReadElement && <CheckSvg isRead={isRead} className='cbox' /> }
                 <img src={imgUrl} />
                 <div>
                     <h4>{heading}</h4>

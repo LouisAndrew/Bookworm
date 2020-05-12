@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
+import { useRouter } from 'next/router'
 
 import Button from '../basics/Button'
 import Editable from './Editable'
 import useFeedbackElement from '../../hooks/useFeedbackElement'
+import useUserBookList from '../../hooks/useUserBookList'
+import { extract } from '../search/Result'
 
 const Profile = ({ user, loggedInUser }) => {
 
@@ -14,6 +17,8 @@ const Profile = ({ user, loggedInUser }) => {
     const [ text, setText ] = useState('This is not an error!')
     const [ isAnError, setIsAnError ] = useState(true)
     const feedback = useFeedbackElement(text, isAnError)
+
+    const bookList = useUserBookList(user.uid)
 
     const onClick = () => {
 
@@ -56,17 +61,107 @@ const Profile = ({ user, loggedInUser }) => {
                 <img src={user.photoURL} />
                 { loggedInUser && <Button onClick={onClick} color={'#fff'} bColor='pink' text='Update your Profile' /> }
             </div>
+            <div className='right'>
+                <h3>{ loggedInUser ? 'Your to-read list:' : `${user.displayName}'s to-read list:` }</h3>
+                {
+                    bookList && bookList.map((book, i) => <Book index={i} book={book} />)
+                }
+            </div>
         </Container>
     )
 }
-
-export default Profile
 
 const UpdatePage = user => (
     <Popup>
         <Editable {...user} />
     </Popup>
 )
+
+const Book = ({ book, index }) => {
+
+    const [ data, setData ] = useState({ })
+    const router = useRouter()
+
+    const asyncWrapper = async book => {
+
+        const temp = await fetchBook(book)
+        setData(temp)
+    }
+
+    const fetchBook = async book => {
+        const rq = await fetch(`https://www.googleapis.com/books/v1/volumes/${book}`)
+        const rsp = await rq.ok ? rq.json() : false
+        return rsp
+    }
+
+    const clickBook = () => {
+
+        router && router.push('/books/[bid]', `/books/${book}`)
+    }
+
+    useState(() => {
+
+        !data.id && asyncWrapper(book)
+    })
+
+    const volumeInfo = data.id && extract(data)
+
+    console.log(volumeInfo)
+
+    return (
+        <BookContainer>
+            { volumeInfo && <>
+                                <img src={volumeInfo.imgUrl} />
+                                <div className='det'>
+                                    <h4 onClick={clickBook}>{(index + 1)}. {volumeInfo.heading}</h4>
+                                    <h5>{volumeInfo.subheading}</h5>
+                                </div>
+                            </>        
+             }
+        </BookContainer>
+    )
+}
+
+export default Profile
+
+const BookContainer = styled.div`
+    
+    display: flex;
+    align-items: center;
+
+    padding: 5%;
+    padding-left: 0;
+
+    img {
+
+        margin-right: 5%;
+        width: 20%;
+    }
+
+    .det {
+
+        h4 {
+
+            margin-bottom: .5rem;
+
+            &:hover {
+
+                cursor: pointer;
+            }
+        }
+    }
+
+    @media screen and ( max-width: 840px ) {
+
+        padding-left: 5%;
+        
+        img {
+
+            width: 20%;
+            margin-right: 10%;
+        }
+    }
+`
 
 const Popup = styled.div`
 
@@ -93,27 +188,47 @@ const Container = styled.div`
     display: flex;
     width: 100%;
 
-    .left {
+    & > div {
 
+
+        width: 50%;
         padding: 5vh 0;
 
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        &.left {
 
-        filter: ${props => props.blur && 'blur(5px)'};
+            display: flex;
+            flex-direction: column;
+            align-items: center;
 
-        h2 {
+            filter: ${props => props.blur && 'blur(5px)'};
 
-            max-width: 200px;
+            h2 {
+
+                max-width: 200px;
+            }
+
+            img {
+                height: 250px;
+                width: 250px;
+
+                margin: 5vh 0;
+                border-radius: 50%;
+            }
         }
 
-        img {
-            height: 250px;
-            width: 250px;
+        &.right {
 
-            margin: 5vh 0;
-            border-radius: 50%;
+            padding-left: 10%;
+
+            @media screen and ( max-width: 840px ){
+                
+                width: 100%;
+                padding-left: 0;
+
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
         }
     }
 

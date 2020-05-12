@@ -29,7 +29,7 @@ const ToRead = () => {
         <Container>
             {
                 bookList && bookList.length > 0 ? 
-                    !hotReload ? bookList.map(book => <BookToRead rerender={rerender} book={book} />) : <Loading />
+                    !hotReload ? bookList.map(book => <BookToRead toReadElement rerender={rerender} book={book} />) : <Loading />
                     :
                     <h3>No to-read book is available!</h3>
             }

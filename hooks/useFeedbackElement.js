@@ -42,4 +42,9 @@ const El = styled.div`
         color: #fff !important;
         padding: 1vh;
     }
+
+    @media screen and ( max-width: 840px ) {
+        
+        top: 18%;
+    }
 `
