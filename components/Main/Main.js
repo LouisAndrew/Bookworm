@@ -20,7 +20,7 @@ const Main = () => {
 
         setTimeout(() => {
             hotReload && setHotReload(false)
-        }, 400)
+        }, 800)
     }, [ hotReload ])
 
     console.log('rendering')

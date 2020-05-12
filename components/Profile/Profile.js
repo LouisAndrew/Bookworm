@@ -1,25 +1,55 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 
 import Button from '../basics/Button'
 import Editable from './Editable'
+import useFeedbackElement from '../../hooks/useFeedbackElement'
 
 const Profile = ({ user, loggedInUser }) => {
 
     const [ updateUser, setUpdateUser ] = useState(false)
+
+    //Feedback section!
+    const [ showFeedback, setShowFeedback ] = useState(false)
+    const [ text, setText ] = useState('This is not an error!')
+    const [ isAnError, setIsAnError ] = useState(true)
+    const feedback = useFeedbackElement(text, isAnError)
 
     const onClick = () => {
 
         setUpdateUser(true)
     }
 
-    const doneUpdating = () => {
+    const doneUpdating = done => {
+
+        setShowFeedback(true)
+        if ( done ) {
+
+            setText('Updated display name')
+            setIsAnError(false)
+        } else {
+
+            setText('Display name is not updated')
+            setIsAnError(true)
+        }
 
         setUpdateUser(false)
     }
 
+    useEffect(() => {
+
+        if ( showFeedback ) {
+
+            setTimeout(() => {
+
+                setShowFeedback(false)
+            }, 1500)
+        }
+    })
+
     return (
         <Container blur={updateUser} className='wrap'>
+            { showFeedback && feedback }
             { updateUser && <UpdatePage doneUpdating={doneUpdating} {...user} /> }
             <div className='left'>
                 <h2> {user.displayName} </h2>

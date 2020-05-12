@@ -9,6 +9,7 @@ import { fetchVolumeData, setQueryToUppercase, submitRev } from '../../helper'
 import Book from './Book'
 import { extract } from '../search/Result'
 import { UserContext } from '../../helper/UserContext'
+import useFeedbackElement from '../../hooks/useFeedbackElement'
 
 export const resizeTextArea = e => {
 
@@ -25,6 +26,12 @@ const Postable = ({ rerender, specificBook, id }) => {
     const [ bookList, setBookList ] = useState([ ])
     const ctx = useContext(UserContext)
 
+    //Feedback section here!
+    const [ showFeedback, setShowFeedback ] = useState(false)
+    const [ text, setText ] = useState('Display name must not be blank!')
+    const [ isAnError, setIsAnError ] = useState(true)
+    const feedback = useFeedbackElement(text, isAnError)
+
     const searchBook = async e => {
 
         e.preventDefault()
@@ -36,8 +43,9 @@ const Postable = ({ rerender, specificBook, id }) => {
 
         const data = bookList.filter(item => item.id === id)[0]
         setBook( data )
-        console.log(book)
         setBookList([ ])
+
+        if ( showFeedback ) { setShowFeedback(false) }
     }
 
     const removeFocus = () => {
@@ -56,14 +64,55 @@ const Postable = ({ rerender, specificBook, id }) => {
 
         setBook({ })
         textRef.current.value = ''
+        success()
         rerender()
+
+        setTimeout(() => {
+            setShowFeedback(false)
+        }, 1500)   
+    }
+
+    const bookError = () => {
+
+        if ( searchRef.style ) {
+
+            searchRef.current.style.borderBottom = '2px solid red'
+        }
+
+        setShowFeedback(true)
+        setText('No book mentioned!')
+        setIsAnError(true)
+    }
+
+    const revError = () => {
+
+        setShowFeedback(true)
+        setText('Review must not be empty!')
+        setIsAnError(true)
+    }
+
+    const success = () => {
+
+        setShowFeedback(true)
+        setText('Post successful!, refreshing..')
+        setIsAnError(false)
     }
 
     const clickPost = () => {
 
-        if ( book.volumeInfo ) {
-            post()
+        if ( !book.id ) {
+
+            bookError()
+            return
         }
+        
+        if ( textRef.current.value === '' ) {
+
+            revError()
+            return
+        }
+
+        post()
     }
 
     const form = <>
@@ -73,7 +122,7 @@ const Postable = ({ rerender, specificBook, id }) => {
                     </form>
                  </>
 
-    const bookFocuse = book.volumeInfo &&  <FocusBook>
+    const bookFocus = book.volumeInfo &&  <FocusBook>
                                                 <img src={book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail} />
                                                 <div className='divider'>
                                                     <h5>{book.volumeInfo.title ? book.volumeInfo.title: undefinedItem} </h5>
@@ -92,9 +141,10 @@ const Postable = ({ rerender, specificBook, id }) => {
 
     return (
         <Container id={id}>
+            { showFeedback && feedback }
             <Textarea placeholder={ specificBook ? `Write a comment for ${specificBook.volumeInfo.title} here` : 'Write a review here!' } onChange={resizeTextArea} ref={textRef} />
             <div className='upper'>
-                { !book.volumeInfo ? form : bookFocuse}
+                { !book.volumeInfo ? form : bookFocus}
                 <Button onClick={clickPost} text='Post a review!' color='white' bColor='pink' />
             </div>
             { bookList && <BookResultQuick focusOnBook={focusOnBook} bookList={bookList} /> }

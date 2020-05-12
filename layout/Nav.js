@@ -167,6 +167,11 @@ const Items = styled.li`
     &:hover {
 
         border-left: 3px solid ${({ theme }) => theme.bg};
+
+        @media screen and ( max-width: 840px ) {
+            
+            border-left: none;s
+        }
     }   
 
     &.active {
@@ -182,11 +187,6 @@ const Items = styled.li`
             
             border-bottom: 3px solid ${({ theme }) => theme.bg};
             border-left: none;
-
-            &:hover {
-
-                border-left: none;
-            }
         }
     }
 `

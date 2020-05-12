@@ -6,25 +6,39 @@ import roundClose from '@iconify/icons-ic/round-close'
 import Button from '../basics/Button'
 import { UserContext } from '../../helper/UserContext'
 import { setUserDisplayName } from '../../helper'
+import useFeedbackElement from '../../hooks/useFeedbackElement'
 
 const Editable = props => {
 
     const [ newName, setNewName ] = useState('')
     const { addUser, user } = useContext(UserContext)
 
+    //feedback section
+    const [ showFeedback, setShowFeedback ] = useState(false)
+    const [ text, setText ] = useState('Display name must not be blank!')
+    const [ isAnError, setIsAnError ] = useState(true)
+    const feedback = useFeedbackElement(text, isAnError)
+
     const changeDisplayName = e => {
 
         e.preventDefault()
+        if ( newName === '' ) { 
+
+            setShowFeedback(true)
+            return
+        } else {
+            if ( showFeedback ) setShowFeedback(false)
+        }
+
         setUserDisplayName(newName, user)
             .then(() => {
                 
                 //TODO error message!
-                console.log('done')
                 let updated = user
                 updated.displayName = newName
                 addUser(updated)
 
-                props.doneUpdating()
+                props.doneUpdating(true)
             })
     }
 
@@ -35,11 +49,14 @@ const Editable = props => {
 
     const close = () => {
 
-        props.doneUpdating()
+        props.doneUpdating(false)
     }
+
+    console.log(feedback)
 
     return (
         <Container>
+            { showFeedback && feedback }
             <Icon onClick={close} className='icon' icon={roundClose} color='white' />
             <Img src={props.photoURL} />
             <div className='inpt'>
@@ -87,7 +104,7 @@ const Container = styled.form`
     flex-direction: column;
     align-items: center;
 
-    position: relative;
+    position: absolute;
 
     padding: 5vh;
     background-color: rgba(0, 0, 0, .25);
