@@ -10,7 +10,7 @@ const Feed = ({ rerender, hotReload }) => {
     const revs = useNewestRev()
 
     return (
-        <Container>
+        <Container className='dkd'>
             <h1>Feed</h1>
             {
                 ( revs[0] && !hotReload ) ? <FeedContainer rerender={rerender} revs={revs} /> : <Loading />

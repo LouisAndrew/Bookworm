@@ -1,9 +1,10 @@
-import React, { useContext, useState, useRef } from 'react'
+import React, { useContext, useState, useRef, useEffect } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { useRouter } from 'next/router'
 import { Icon, InlineIcon } from '@iconify/react'
 import fireIcon from '@iconify/icons-fa-solid/fire'
 import bxsCommentDetail from '@iconify/icons-bx/bxs-comment-detail'
+// import anime from 'animejs/lib/anime.es.js'
 
 import { useUserData } from '../../hooks/useFirestoreUser'
 import { UserContext } from '../../helper/UserContext'
@@ -41,6 +42,20 @@ const Rev = ({ uid , rev, bookName, dateCreated, bookId, revId, fireCount, comme
       //increment the fire count just based on ui here
       //so no need to get realtime data from firestore
       defaultFireClicked && fireCount--
+
+      // const revAnimation = anime({
+      //       targets: '.review',
+      //       translateY: [100, 0],
+      //       opacity: [0, 1],
+      //       autoplay: false,
+      //       delay: anime.stagger(100),
+      //       easing: 'easeInQuad'
+      // })
+
+      // useEffect(() => {
+
+      //       revAnimation.play()
+      // }, [ ])
 
       const clickBook = () => {
 
@@ -86,9 +101,10 @@ const Rev = ({ uid , rev, bookName, dateCreated, bookId, revId, fireCount, comme
             //rerendering to get newest data from firestore
             rerender()
       }
+    
 
       return (
-            <Container revId={revId}>
+            <Container className='review' revId={revId}>
                   <div className='rv'>
                         <img src={user.photoURL} />
                         <div className='right'>

@@ -12,8 +12,6 @@ const useComment = cid => {
         const rq = await dbRef.get()
         const doc = await rq.exists ? rq.data() : false
 
-        console.log(doc)
-
         if ( doc ) {
 
             setComment(doc)
