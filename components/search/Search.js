@@ -4,23 +4,47 @@ import { useRouter } from 'next/router'
 import { setQueryToUppercase, fetchVolumeData } from '../../helper'
 import { UserContext } from '../../helper/UserContext'
 import Result from './Result'
+import Pagination from './Pagination'
+import Loading from '../basics/Loading'
 
 const Search = () => {
 
     const router = useRouter()
     const [ result, setResult ] = useState({  })
     const [ routerDoesExist, setRouterDoesExist ] = useState(false)
+
     const [ sortBy, setSortBy ] = useState('relevance')
     const [ query, setQuery ] = useState('')
     const [ startIndex, setStartIndex ] = useState(0)
     const [ maxResult, setMaxResult ] = useState(10)
-    const { user } = useContext(UserContext)
+    const [ currentPage, setCurrentPage ] = useState(1)
 
     const [ isLoading, setIsLoading ] = useState(false)
     
     useEffect(() => {
+
         if (router && router.query.q && !routerDoesExist) {
             setRouterDoesExist(true)
+            setQuery(router.query.q)
+        }
+
+    }, [])
+
+    useEffect(() => {
+
+        if (routerDoesExist && !result.items) {
+
+            fetchDataNeeded()
+        } else {
+    
+            if (isLoading) {
+                setIsLoading(false)
+            }
+        }
+        
+        if (result.items && query !== router.query.q) {
+            
+            setResult({ })
             setQuery(router.query.q)
         }
     })
@@ -35,25 +59,24 @@ const Search = () => {
         await setResult(rsp)
     }
 
-    if (routerDoesExist && !result.items) {
-        fetchDataNeeded()
-    } else {
-        if (isLoading) {
-            setIsLoading(false)
-        }
-    }
-    
-    if (result.items && query !== router.query.q) {
+    const paginate = num => {
+
+        setCurrentPage(num)
+        const newStartIndex = num * maxResult - maxResult
+        setStartIndex(newStartIndex)
         setResult({ })
-        setQuery(router.query.q)
     }
 
     return (
         <>
             {
                 !isLoading && result.items ? 
-                    <Result query={router.query.q} items={result.items} /> :
-                    <h2>Loading..</h2>
+                    <>
+                        <Result query={router.query.q} items={result.items} />
+                        <Pagination paginate={paginate} totalItems={result.totalItems} currentPage={currentPage} maxResult={maxResult} />
+                    </>
+                     :
+                    <Loading />
             }
         </>
     )

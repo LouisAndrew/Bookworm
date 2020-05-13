@@ -116,7 +116,7 @@ const Postable = ({ rerender, specificBook, id }) => {
     }
 
     const form = <>
-                    <Icon className='icon' icon={bxsSearchAlt2} />
+                    <Icon className='icon' icon={bxsSearchAlt2} color={ ctx.themeLight ? 'black' : 'white' } />
                     <form onSubmit={searchBook}>
                         <Mention ref={searchRef} />
                     </form>

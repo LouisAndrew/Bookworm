@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { auth } from '../../lib/firebase'
 import Cookie from 'js-cookie'
 import { useRouter } from 'next/router'
@@ -8,15 +8,20 @@ import useFirestoreUser from '../../hooks/useFirestoreUser'
 import Button from '../basics/Button'
 import LoginHeader from './LoginHeader'
 import { UserContext } from '../../helper/UserContext'
+import useFeedbackElement from '../../hooks/useFeedbackElement'
 
 const Login = () => {
 
-    const [ savedUser, setSavedUser ] = useState('')
     const router = useRouter()
-
+    const [ savedUser, setSavedUser ] = useState('')
     const userData = useFirestoreUser(savedUser)
 
     const { user, addUser, themeLight } = useContext(UserContext)
+
+    const [ showFeedback, setShowFeedback ] = useState(false)
+    const [ text, setText ] = useState('')
+    const [ isAnError, setIsAnError ] = useState(true)
+    const feedback = useFeedbackElement(text, isAnError)
 
     if ( userData.uid ) {
         addUser(userData)
@@ -26,6 +31,17 @@ const Login = () => {
                 router.push('/')
             })
     }
+
+    useEffect(() => {
+
+        if ( showFeedback ) {
+
+            setTimeout(() => {
+                setShowFeedback(false)
+            }, 2000)
+        }
+
+    }, [ showFeedback ])
 
     const defineExpiration = () => {
 
@@ -53,12 +69,27 @@ const Login = () => {
                 logUserIn(res.user)
             })
             .catch(err => {
-                console.log(err)
+                handleError(err.code)
             })
+    }
+
+    const handleError = errId => {
+
+        setShowFeedback(true)
+        setIsAnError(true)
+
+        switch ( errId ) {
+
+            case 'auth/network-request-failed':
+                setText('Please check your connection')
+            default:
+                setText('Oops! Something is wrong.')
+        }
     }
 
     return (
         <Container>
+            { showFeedback && feedback }
             <LoginHeader className='login-head' />
             <h3 id='head'></h3>
             <Button onClick={loginWithGoogle} color='font' bColor='bg' border={`3px solid ${themeLight ? '#000' : '#fff' }`} text='Login With Google' />
@@ -76,6 +107,11 @@ const Container = styled.section`
     position: absolute;
     top: 40%;
     transform: translate(0, -40%);
+
+    #el {
+
+        top: -60%;
+    }
 
     @media only screen and (max-width: 840px) {
         
