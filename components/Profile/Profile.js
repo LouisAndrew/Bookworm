@@ -165,14 +165,14 @@ const BookContainer = styled.div`
 
 const Popup = styled.div`
 
-    height: 100vh;
+    height: 100%;
     width: 100vw;
 
     background-color: rgba(0, 0, 0, 0.25);
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
-    z-index: 2;
+    z-index: 5;
 /* 
     top: 50%;
     left: 50%;
@@ -188,47 +188,52 @@ const Container = styled.div`
     display: flex;
     width: 100%;
 
-    & > div {
+    /* #el {
 
+        width: fit-content !important;
+        height: fit-content !important;
+    } */
+
+    .left {
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 
         width: 50%;
         padding: 5vh 0;
 
-        &.left {
+        filter: ${props => props.blur && 'blur(5px)'};
+
+        img {
+            height: 250px;
+            width: 250px;
+
+            margin: 5vh 0;
+            border-radius: 50%;
+        }
+
+        h2 {
+
+            max-width: 200px;
+        }
+    }
+
+    .right {
+
+        padding-left: 10%;
+
+        width: 50%;
+        padding: 5vh 0;
+
+        @media screen and ( max-width: 840px ){
+            
+            width: 100%;
+            padding-left: 0;
 
             display: flex;
             flex-direction: column;
             align-items: center;
-
-            filter: ${props => props.blur && 'blur(5px)'};
-
-            h2 {
-
-                max-width: 200px;
-            }
-
-            img {
-                height: 250px;
-                width: 250px;
-
-                margin: 5vh 0;
-                border-radius: 50%;
-            }
-        }
-
-        &.right {
-
-            padding-left: 10%;
-
-            @media screen and ( max-width: 840px ){
-                
-                width: 100%;
-                padding-left: 0;
-
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
         }
     }
 
