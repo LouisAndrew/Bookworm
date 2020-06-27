@@ -8,6 +8,7 @@ Simple social media app where user can search for a book and post a comment / re
 * [Styled-components] (https://styled-components.com/) - for styling
 * [Google Books API](https://developers.google.com/books) - books data source
 * [Firebase](https://firebase.google.com/) - Backend
+* [Vercel] (https://vercel.com/) - Hosted on Vercel
 
 ## License
 
